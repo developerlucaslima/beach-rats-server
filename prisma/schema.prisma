@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  professor
+  aluno
+  atleta
+  administrador
+}
+
+enum Modality {
+  futevolei
+  altinha
+}
+
+enum PreferredSide {
+  left
+  right
+}
+
+enum DominantFoot {
+  left
+  right
+  ambidextrous
+}
+
+enum CardType {
+  gold
+  silver
+  bronze
+  special
+}
+
+enum PhysicalLabel {
+  forte
+  agil
+  resistente
+  explosivo
+  potente
+  fraco
+  lento
+  cansado
+  lesionado
+}
+
+enum MentalLabel {
+  frio
+  concentrado
+  confiante
+  estressado
+  provocador
+  resiliente
+  distraido
+  inseguro
+  ansioso
+  timido
+}
+
+enum SkillType {
+  attack
+  defense
+}
+
+model Player {
+  id                 String              @id @default(cuid())
+  name               String
+  email              String
+  passwordHash       String
+  photo              String?
+  age                Int?
+  role               Role
+  modality           Modality
+  country            String?
+  address            String?
+  preferredSide      PreferredSide
+  dominantFoot       DominantFoot
+  physical           PhysicalLabel
+  mental             MentalLabel
+  playerFundamentals PlayerFundamental[]
+  playerResources    PlayerResource[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Fundamental {
+  name     String    @id
+  emoji    String
+  rating   Int
+  modality Modality
+  type     SkillType
+
+  playerFundamentals PlayerFundamental[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PlayerFundamental {
+  id              String @id @default(cuid())
+  rating          Int
+  playerId        String
+  fundamentalName String
+
+  player      Player      @relation(fields: [playerId], references: [id])
+  fundamental Fundamental @relation(fields: [fundamentalName], references: [name])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Resource {
+  name     String    @id
+  emoji    String
+  rating   Int
+  modality Modality
+  type     SkillType
+
+  playerResources PlayerResource[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PlayerResource {
+  id           String  @id @default(cuid())
+  hasResource  Boolean
+  playerId     String
+  resourceName String
+
+  player   Player   @relation(fields: [playerId], references: [id])
+  resource Resource @relation(fields: [resourceName], references: [name])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
