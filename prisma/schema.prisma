@@ -78,11 +78,11 @@ model Player {
   latitude           Decimal?
   longitude          Decimal?
   role               Role?
-  modality           Modality?
   preferredSide      PreferredSide?
   dominantFoot       DominantFoot?
   physical           PhysicalLabel?
   mental             MentalLabel?
+  modality           Modality[]
   playerFundamentals PlayerFundamental[]
   playerResources    PlayerResource[]
 
@@ -91,12 +91,11 @@ model Player {
 }
 
 model Fundamental {
-  name     String    @id
-  emoji    String
-  rating   Int
-  modality Modality
-  type     SkillType
-
+  name               String              @id @unique
+  abbreviation       String
+  description        String
+  skillType          SkillType[]
+  modality           Modality[]
   playerFundamentals PlayerFundamental[]
 
   createdAt DateTime @default(now())
@@ -104,10 +103,10 @@ model Fundamental {
 }
 
 model PlayerFundamental {
-  id              String @id @default(cuid())
-  rating          Int
-  playerId        String
-  fundamentalName String
+  id                String @id @default(cuid())
+  fundamentalRating Int
+  playerId          String
+  fundamentalName   String
 
   player      Player      @relation(fields: [playerId], references: [id])
   fundamental Fundamental @relation(fields: [fundamentalName], references: [name])
@@ -117,12 +116,11 @@ model PlayerFundamental {
 }
 
 model Resource {
-  name     String    @id
-  emoji    String
-  rating   Int
-  modality Modality
-  type     SkillType
-
+  name            String           @id @unique
+  abbreviation    String
+  description     String
+  skillType       SkillType[]
+  modality        Modality[]
   playerResources PlayerResource[]
 
   createdAt DateTime @default(now())

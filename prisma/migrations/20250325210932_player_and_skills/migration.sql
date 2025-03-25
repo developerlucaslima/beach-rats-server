@@ -34,11 +34,11 @@ CREATE TABLE "Player" (
     "latitude" DECIMAL(65,30),
     "longitude" DECIMAL(65,30),
     "role" "Role",
-    "modality" "Modality",
     "preferredSide" "PreferredSide",
     "dominantFoot" "DominantFoot",
     "physical" "PhysicalLabel",
     "mental" "MentalLabel",
+    "modality" "Modality"[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -48,10 +48,10 @@ CREATE TABLE "Player" (
 -- CreateTable
 CREATE TABLE "Fundamental" (
     "name" TEXT NOT NULL,
-    "emoji" TEXT NOT NULL,
-    "rating" INTEGER NOT NULL,
-    "modality" "Modality" NOT NULL,
-    "type" "SkillType" NOT NULL,
+    "abbreviation" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "skillType" "SkillType"[],
+    "modality" "Modality"[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -61,7 +61,7 @@ CREATE TABLE "Fundamental" (
 -- CreateTable
 CREATE TABLE "PlayerFundamental" (
     "id" TEXT NOT NULL,
-    "rating" INTEGER NOT NULL,
+    "fundamentalRating" INTEGER NOT NULL,
     "playerId" TEXT NOT NULL,
     "fundamentalName" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -73,10 +73,10 @@ CREATE TABLE "PlayerFundamental" (
 -- CreateTable
 CREATE TABLE "Resource" (
     "name" TEXT NOT NULL,
-    "emoji" TEXT NOT NULL,
-    "rating" INTEGER NOT NULL,
-    "modality" "Modality" NOT NULL,
-    "type" "SkillType" NOT NULL,
+    "abbreviation" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "skillType" "SkillType"[],
+    "modality" "Modality"[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -97,6 +97,12 @@ CREATE TABLE "PlayerResource" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Player_email_key" ON "Player"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Fundamental_name_key" ON "Fundamental"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Resource_name_key" ON "Resource"("name");
 
 -- AddForeignKey
 ALTER TABLE "PlayerFundamental" ADD CONSTRAINT "PlayerFundamental_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
