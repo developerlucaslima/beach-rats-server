@@ -69,19 +69,20 @@ enum SkillType {
 
 model Player {
   id                 String              @id @default(cuid())
+  email              String              @unique
   name               String
-  email              String
   passwordHash       String
   photo              String?
   age                Int?
-  role               Role
-  modality           Modality
-  country            String?
-  address            String?
-  preferredSide      PreferredSide
-  dominantFoot       DominantFoot
-  physical           PhysicalLabel
-  mental             MentalLabel
+  nationality        String?
+  latitude           Decimal?
+  longitude          Decimal?
+  role               Role?
+  modality           Modality?
+  preferredSide      PreferredSide?
+  dominantFoot       DominantFoot?
+  physical           PhysicalLabel?
+  mental             MentalLabel?
   playerFundamentals PlayerFundamental[]
   playerResources    PlayerResource[]
 

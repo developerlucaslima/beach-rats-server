@@ -25,19 +25,20 @@ CREATE TYPE "SkillType" AS ENUM ('attack', 'defense');
 -- CreateTable
 CREATE TABLE "Player" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
     "photo" TEXT,
     "age" INTEGER,
-    "role" "Role" NOT NULL,
-    "modality" "Modality" NOT NULL,
-    "country" TEXT,
-    "address" TEXT,
-    "preferredSide" "PreferredSide" NOT NULL,
-    "dominantFoot" "DominantFoot" NOT NULL,
-    "physical" "PhysicalLabel" NOT NULL,
-    "mental" "MentalLabel" NOT NULL,
+    "nationality" TEXT,
+    "latitude" DECIMAL(65,30),
+    "longitude" DECIMAL(65,30),
+    "role" "Role",
+    "modality" "Modality",
+    "preferredSide" "PreferredSide",
+    "dominantFoot" "DominantFoot",
+    "physical" "PhysicalLabel",
+    "mental" "MentalLabel",
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -93,6 +94,9 @@ CREATE TABLE "PlayerResource" (
 
     CONSTRAINT "PlayerResource_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Player_email_key" ON "Player"("email");
 
 -- AddForeignKey
 ALTER TABLE "PlayerFundamental" ADD CONSTRAINT "PlayerFundamental_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
