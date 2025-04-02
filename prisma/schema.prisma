@@ -8,9 +8,9 @@ datasource db {
 }
 
 enum Role {
-  professor
-  aluno
-  atleta
+  // professor
+  student
+  athlete
   administrador
 }
 
@@ -38,28 +38,28 @@ enum CardType {
 }
 
 enum PhysicalLabel {
-  forte
-  agil
-  resistente
-  explosivo
-  potente
-  fraco
-  lento
-  cansado
-  lesionado
+  strong // forte
+  agile // ágil
+  resilient // resistente
+  explosive // explosivo
+  powerful // potente
+  weak // fraco
+  slow // lento
+  tired // cansado
+  injured // lesionado
 }
 
 enum MentalLabel {
-  frio
-  concentrado
-  confiante
-  estressado
-  provocador
-  resiliente
-  distraido
-  inseguro
-  ansioso
-  timido
+  calm // frio
+  focused // concentrado
+  confident // confiante
+  stressed // estressado
+  provocative // provocador
+  resilient // resiliente
+  distracted // distraído
+  insecure // inseguro
+  anxious // ansioso
+  shy // tímido
 }
 
 enum SkillType {
@@ -77,7 +77,7 @@ model Player {
   nationality        String?
   latitude           Decimal?
   longitude          Decimal?
-  role               Role?
+  role               Role                @default(athlete)
   preferredSide      PreferredSide?
   dominantFoot       DominantFoot?
   physical           PhysicalLabel?

@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('professor', 'aluno', 'atleta', 'administrador');
+CREATE TYPE "Role" AS ENUM ('student', 'athlete', 'administrador');
 
 -- CreateEnum
 CREATE TYPE "Modality" AS ENUM ('futevolei', 'altinha');
@@ -14,10 +14,10 @@ CREATE TYPE "DominantFoot" AS ENUM ('left', 'right', 'ambidextrous');
 CREATE TYPE "CardType" AS ENUM ('gold', 'silver', 'bronze', 'special');
 
 -- CreateEnum
-CREATE TYPE "PhysicalLabel" AS ENUM ('forte', 'agil', 'resistente', 'explosivo', 'potente', 'fraco', 'lento', 'cansado', 'lesionado');
+CREATE TYPE "PhysicalLabel" AS ENUM ('strong', 'agile', 'resilient', 'explosive', 'powerful', 'weak', 'slow', 'tired', 'injured');
 
 -- CreateEnum
-CREATE TYPE "MentalLabel" AS ENUM ('frio', 'concentrado', 'confiante', 'estressado', 'provocador', 'resiliente', 'distraido', 'inseguro', 'ansioso', 'timido');
+CREATE TYPE "MentalLabel" AS ENUM ('calm', 'focused', 'confident', 'stressed', 'provocative', 'resilient', 'distracted', 'insecure', 'anxious', 'shy');
 
 -- CreateEnum
 CREATE TYPE "SkillType" AS ENUM ('attack', 'defense');
@@ -33,7 +33,7 @@ CREATE TABLE "Player" (
     "nationality" TEXT,
     "latitude" DECIMAL(65,30),
     "longitude" DECIMAL(65,30),
-    "role" "Role",
+    "role" "Role" NOT NULL DEFAULT 'athlete',
     "preferredSide" "PreferredSide",
     "dominantFoot" "DominantFoot",
     "physical" "PhysicalLabel",
