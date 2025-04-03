@@ -2,9 +2,8 @@ export const typeDefs = `#graphql
   scalar DateTime
 
   enum Role {
-    professor
-    aluno
-    atleta
+    student
+    athlete
     administrador
   }
 
@@ -52,6 +51,22 @@ export const typeDefs = `#graphql
   enum SkillType {
     attack
     defense
+  }
+
+  input CreatePlayerInput {
+    name: String!
+    email: String!
+    password: String!
+    photo: String
+    age: Int
+    role: Role
+    modality: Modality
+    country: String
+    address: String
+    preferredSide: PreferredSide
+    dominantFoot: DominantFoot
+    physical: PhysicalLabel
+    mental: MentalLabel
   }
 
   # This "Player" type defines the queryable fields for every player in our data source.
@@ -122,10 +137,6 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
-    createOnePlayer(
-      name: String!, 
-      email: String!, 
-      password: String!
-    ): Player!
+    createOnePlayer(input: CreatePlayerInput!): Player!
   }
 `

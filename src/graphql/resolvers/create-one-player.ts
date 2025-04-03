@@ -1,27 +1,16 @@
-import { createOnePlayerFactory } from "@/use-cases/factories/create-one-player"
+import { createPlayerSchema } from '../schemas/player.schema'
+import { CreateOnePlayerUseCase } from '@/use-cases/create-one-player'
+import { PrismaPlayersRepository } from '@/repositories/prisma/players-repository'
 
-export interface CreateOnePlayerProps {
-  name: string;
-  email: string;
-  password: string
-}
+const playersRepository = new PrismaPlayersRepository()
+const createOnePlayerUseCase = new CreateOnePlayerUseCase(playersRepository)
 
-export async function createOnePlayerResolver({ name, email, password }: CreateOnePlayerProps) {
-  try {
-    const createOnePlayerUseCase = createOnePlayerFactory()
+export async function createOnePlayerResolver(_: any, args: { input: any }) {
+  // Validate input with Zod
+  const validatedInput = createPlayerSchema.parse(args.input)
 
-    const { player } = await createOnePlayerUseCase.execute({
-      name,
-      email,
-      password,
-    })
+  // Execute use case with validated input
+  const { player } = await createOnePlayerUseCase.execute(validatedInput)
 
-    return player
-
-  } catch (err) {
-    // if (err instanceof EmailNotAvailableException) {
-    // 	return reply.status(err.code).send({ message: err.message })
-    // }
-    throw err
-  }
+  return player
 }
