@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: bitnami/postgresql:latest
+    container_name: postgresql
+    volumes:
+      - db:/var/lib/postgresql
+    environment:
+      POSTGRESQL_USER: beachrats
+      POSTGRESQL_PASSWORD: beachrats
+      POSTGRESQL_DATABASE: beachrats
+    ports:
+      - "5432:5432"
+    networks:
+      - tatui-network
+
+networks:
+  tatui-network:
+    driver: bridge
+
+volumes:
+  db:

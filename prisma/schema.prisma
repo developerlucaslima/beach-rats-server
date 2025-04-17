@@ -1,0 +1,201 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  athlete
+  administrador
+}
+
+enum SubscriptionPlan {
+  free
+  premium
+  pro
+}
+
+enum Modality {
+  footvolley
+  altinha
+  beach_tennis
+  beach_volleyball
+}
+
+enum Side {
+  right
+  left
+  both
+}
+
+enum Category {
+  beginner
+  intermediate
+  advanced
+  pro
+}
+
+enum SkillType {
+  attack
+  defense
+}
+
+enum SkillGroup {
+  fundamental
+  resource
+}
+
+enum ConditionType {
+  physical
+  mental
+}
+
+model Player {
+  id                    String           @id @default(cuid())
+  email                 String           @unique
+  name                  String
+  passwordHash          String
+  bio                   String?
+  profileImage          String?
+  age                   Int?
+  countryCode           String?
+  latitude              Float?
+  longitude             Float?
+  role                  Role             @default(athlete)
+  subscriptionPlan      SubscriptionPlan @default(free)
+  mainModality          Modality?
+  physicalConditionName String?
+  mentalConditionName   String?
+
+  playerModalityStats PlayerModalityStat[]
+
+  country Country? @relation(fields: [countryCode], references: [code])
+
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  physicalCondition PlayerCondition? @relation("PhysicalCondition", fields: [physicalConditionName], references: [name])
+  mentalCondition   PlayerCondition? @relation("MentalCondition", fields: [mentalConditionName], references: [name])
+
+  @@map("players")
+}
+
+model Country {
+  code  String @id
+  name  String
+  emoji String
+
+  players Player[]
+
+  @@map("countries")
+}
+
+model PlayerCondition {
+  name          String        @id
+  emoji         String
+  conditionType ConditionType
+
+  physicalPlayers Player[] @relation("PhysicalCondition")
+  mentalPlayers   Player[] @relation("MentalCondition")
+
+  @@unique([name, conditionType])
+  @@map("player_conditions")
+}
+
+model SkillModalityTag {
+  skillName String
+  modality  Modality
+
+  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+
+  @@id([skillName, modality])
+  @@map("skill_modality_tags")
+}
+
+model SkillTypeTag {
+  skillName String
+  skillType SkillType
+
+  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+
+  @@id([skillName, skillType])
+  @@map("skill_type_tags")
+}
+
+model Skill {
+  name        String @id
+  description String
+
+  skillGroup        SkillGroup
+  skillModalityTags SkillModalityTag[]
+  skillTypeTags     SkillTypeTag[]
+  playerSkillMonths PlayerSkillMonth[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("skills")
+}
+
+model PlayerModalityStat {
+  id       String   @id @default(cuid())
+  playerId String
+  modality Modality
+
+  playerModalityMonths PlayerModalityMonth[]
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([playerId, modality])
+  @@index([playerId])
+  @@index([modality])
+  @@map("player_modality_stats")
+}
+
+model PlayerModalityMonth {
+  id               String   @id @default(cuid())
+  playerModalityId String
+  month            DateTime
+
+  attack    Int
+  defense   Int
+  skills    Int
+  resources Int
+  overall   Int
+
+  skillsDetails PlayerSkillMonth[]
+
+  playerModalityStat PlayerModalityStat @relation(fields: [playerModalityId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([playerModalityId, month])
+  @@index([playerModalityId])
+  @@index([month])
+  @@index([createdAt])
+  @@map("player_modality_months")
+}
+
+model PlayerSkillMonth {
+  id                    String   @id @default(cuid())
+  category              Category
+  playerModalityMonthId String
+  skillName             String
+
+  playerModalityMonth PlayerModalityMonth @relation(fields: [playerModalityMonthId], references: [id], onDelete: Cascade)
+  skill               Skill               @relation(fields: [skillName], references: [name], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([playerModalityMonthId, skillName])
+  @@index([playerModalityMonthId])
+  @@index([skillName])
+  @@index([createdAt])
+  @@map("player_skill_months")
+}
