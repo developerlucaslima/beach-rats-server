@@ -3,7 +3,16 @@
     "rootDirs": ["src"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/entities/*": ["./src/core/entities/*"],
+      "@/use-cases/*": ["./src/core/use-cases/*"],
+      "@/factories/*": ["./src/core/use-cases/factories/*"],
+      "@/errors/*": ["./src/core/errors/*"],
+      "@/database/*": ["./src/infrastructure/database/*"],
+      "@/repositories/*": ["./src/infrastructure/repositories/*"],
+      "@/controllers/*": ["./src/http/controllers/*"],
+      "@/middlewares/*": ["./src/http/middlewares/*"],
+      "@/routes/*": ["./src/http/routes/*"]
     },
     "outDir": "dist",
     "lib": ["ES2024"],
