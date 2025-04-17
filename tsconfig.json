@@ -5,9 +5,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/entities/*": ["./src/core/entities/*"],
-      "@/use-cases/*": ["./src/core/use-cases/*"],
-      "@/factories/*": ["./src/core/use-cases/factories/*"],
       "@/errors/*": ["./src/core/errors/*"],
+      "@/factories/*": ["./src/core/factories/*"],
+      "@/use-cases/*": ["./src/core/use-cases/*"],
       "@/database/*": ["./src/infrastructure/database/*"],
       "@/repositories/*": ["./src/infrastructure/repositories/*"],
       "@/controllers/*": ["./src/http/controllers/*"],

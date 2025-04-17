@@ -1,5 +1,5 @@
-import { SignUpPlayerUseCase } from "@/core/use-case/sign-up-player-use-case"
 import { PrismaPlayersRepository } from "@/repositories/prisma/players-repository"
+import { SignUpPlayerUseCase } from "@/use-cases/sign-up-player-use-case"
 
 export function playerSignUpFactory() {
   const playersRepository = new PrismaPlayersRepository()
