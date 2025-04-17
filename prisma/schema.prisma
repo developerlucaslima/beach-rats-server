@@ -8,58 +8,34 @@ datasource db {
 }
 
 enum Role {
-  // professor
-  student
   athlete
   administrador
 }
 
+enum SubscriptionPlan {
+  free
+  premium
+  pro
+}
+
 enum Modality {
-  futevolei
+  footvolley
   altinha
+  beach_tennis
+  beach_volleyball
 }
 
-enum PreferredSide {
-  left
+enum Side {
   right
-}
-
-enum DominantFoot {
   left
-  right
-  ambidextrous
+  both
 }
 
-enum CardType {
-  gold
-  silver
-  bronze
-  special
-}
-
-enum PhysicalLabel {
-  strong // forte
-  agile // ágil
-  resilient // resistente
-  explosive // explosivo
-  powerful // potente
-  weak // fraco
-  slow // lento
-  tired // cansado
-  injured // lesionado
-}
-
-enum MentalLabel {
-  calm // frio
-  focused // concentrado
-  confident // confiante
-  stressed // estressado
-  provocative // provocador
-  resilient // resiliente
-  distracted // distraído
-  insecure // inseguro
-  anxious // ansioso
-  shy // tímido
+enum Category {
+  beginner
+  intermediate
+  advanced
+  pro
 }
 
 enum SkillType {
@@ -67,75 +43,158 @@ enum SkillType {
   defense
 }
 
+enum SkillGroup {
+  fundamental
+  resource
+}
+
+enum ConditionType {
+  physical
+  mental
+}
+
 model Player {
-  id                 String              @id @default(cuid())
-  email              String              @unique
-  name               String
-  passwordHash       String
-  photo              String?
-  age                Int?
-  nationality        String?
-  latitude           Decimal?
-  longitude          Decimal?
-  role               Role                @default(athlete)
-  preferredSide      PreferredSide?
-  dominantFoot       DominantFoot?
-  physical           PhysicalLabel?
-  mental             MentalLabel?
-  modality           Modality[]
-  playerFundamentals PlayerFundamental[]
-  playerResources    PlayerResource[]
+  id                    String           @id @default(cuid())
+  email                 String           @unique
+  name                  String
+  passwordHash          String
+  bio                   String?
+  profileImage          String?
+  age                   Int?
+  countryCode           String?
+  latitude              Float?
+  longitude             Float?
+  role                  Role             @default(athlete)
+  subscriptionPlan      SubscriptionPlan @default(free)
+  mainModality          Modality?
+  physicalConditionName String?
+  mentalConditionName   String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  playerModalityStats PlayerModalityStat[]
+
+  country Country? @relation(fields: [countryCode], references: [code])
+
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  physicalCondition PlayerCondition? @relation("PhysicalCondition", fields: [physicalConditionName], references: [name])
+  mentalCondition   PlayerCondition? @relation("MentalCondition", fields: [mentalConditionName], references: [name])
+
+  @@map("players")
 }
 
-model Fundamental {
-  name               String              @id @unique
-  abbreviation       String
-  description        String
-  skillType          SkillType[]
-  modality           Modality[]
-  playerFundamentals PlayerFundamental[]
+model Country {
+  code  String @id
+  name  String
+  emoji String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  players Player[]
+
+  @@map("countries")
 }
 
-model PlayerFundamental {
-  id                String @id @default(cuid())
-  fundamentalRating Int
-  playerId          String
-  fundamentalName   String
+model PlayerCondition {
+  name          String        @id
+  emoji         String
+  conditionType ConditionType
 
-  player      Player      @relation(fields: [playerId], references: [id])
-  fundamental Fundamental @relation(fields: [fundamentalName], references: [name])
+  physicalPlayers Player[] @relation("PhysicalCondition")
+  mentalPlayers   Player[] @relation("MentalCondition")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@unique([name, conditionType])
+  @@map("player_conditions")
 }
 
-model Resource {
-  name            String           @id @unique
-  abbreviation    String
-  description     String
-  skillType       SkillType[]
-  modality        Modality[]
-  playerResources PlayerResource[]
+model SkillModalityTag {
+  skillName String
+  modality  Modality
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+
+  @@id([skillName, modality])
+  @@map("skill_modality_tags")
 }
 
-model PlayerResource {
-  id           String  @id @default(cuid())
-  hasResource  Boolean
-  playerId     String
-  resourceName String
+model SkillTypeTag {
+  skillName String
+  skillType SkillType
 
-  player   Player   @relation(fields: [playerId], references: [id])
-  resource Resource @relation(fields: [resourceName], references: [name])
+  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+
+  @@id([skillName, skillType])
+  @@map("skill_type_tags")
+}
+
+model Skill {
+  name        String @id
+  description String
+
+  skillGroup        SkillGroup
+  skillModalityTags SkillModalityTag[]
+  skillTypeTags     SkillTypeTag[]
+  playerSkillMonths PlayerSkillMonth[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("skills")
+}
+
+model PlayerModalityStat {
+  id       String   @id @default(cuid())
+  playerId String
+  modality Modality
+
+  playerModalityMonths PlayerModalityMonth[]
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([playerId, modality])
+  @@index([playerId])
+  @@index([modality])
+  @@map("player_modality_stats")
+}
+
+model PlayerModalityMonth {
+  id               String   @id @default(cuid())
+  playerModalityId String
+  month            DateTime
+
+  attack    Int
+  defense   Int
+  skills    Int
+  resources Int
+  overall   Int
+
+  skillsDetails PlayerSkillMonth[]
+
+  playerModalityStat PlayerModalityStat @relation(fields: [playerModalityId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([playerModalityId, month])
+  @@index([playerModalityId])
+  @@index([month])
+  @@index([createdAt])
+  @@map("player_modality_months")
+}
+
+model PlayerSkillMonth {
+  id                    String   @id @default(cuid())
+  category              Category
+  playerModalityMonthId String
+  skillName             String
+
+  playerModalityMonth PlayerModalityMonth @relation(fields: [playerModalityMonthId], references: [id], onDelete: Cascade)
+  skill               Skill               @relation(fields: [skillName], references: [name], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([playerModalityMonthId, skillName])
+  @@index([playerModalityMonthId])
+  @@index([skillName])
+  @@index([createdAt])
+  @@map("player_skill_months")
 }
