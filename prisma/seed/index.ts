@@ -3,8 +3,8 @@ import { PrismaClient } from "@prisma/client/extension"
 import { altinhaAndFootvolleyFundamentals } from "./altinha-and-footvolley-fundamentals"
 import { altinhaAndFootvolleyResources } from "./altinha-and-footvolley-resources"
 import { countries } from "./countries"
-import { modalities } from "./modalities"
-import { skillTypes } from "./skill-types"
+import { modalitiesSeed } from "./modalities"
+import { skillTypesSeed } from "./skill-types"
 
 const prisma = new PrismaClient()
 
@@ -16,7 +16,7 @@ async function main() {
     skipDuplicates: true,
   })
 
-  for (const modality of modalities) {
+  for (const modality of modalitiesSeed) {
     await prisma.modality.upsert({
       where: { modalityId: modality.modalityId },
       update: {},
@@ -24,7 +24,7 @@ async function main() {
     })
   }
 
-  for (const skillType of skillTypes) {
+  for (const skillType of skillTypesSeed) {
     await prisma.skillType.upsert({
       where: { skillTypeId: skillType.skillTypeId },
       update: {},

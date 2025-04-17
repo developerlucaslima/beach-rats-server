@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
-export const modalities: Prisma.ModalityCreateInput[] = [
+export const modalitiesSeed = [
   {
     modalityId: 'altinha',
     description: 'A Brazilian beach sport focused on keeping the ball in the air with freestyle touches, emphasizing control, creativity, and teamwork.',
@@ -17,4 +17,13 @@ export const modalities: Prisma.ModalityCreateInput[] = [
     modalityId: 'beach_volleyball',
     description: 'A team sport played on sand with two players per team, requiring high levels of coordination, jumping, and strategic ball placement to win points.',
   },
-]
+] as const satisfies readonly Prisma.ModalityCreateInput[]
+
+export type ValidModalityId = typeof modalitiesSeed[number]['modalityId']
+
+export const modalities = (mods: ValidModalityId[]) => ({
+  create: mods.map((m) => ({
+    modality: { connect: { modalityId: m } },
+  })),
+})
+

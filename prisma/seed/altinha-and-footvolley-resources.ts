@@ -1,42 +1,28 @@
 import { type Prisma } from '@prisma/client'
 
-const altinhaId = 'altinha'
-const footvolleyId = 'footvolley'
-const attackType = 'attack'
-const defenseType = 'defense'
+import { modalities } from './modalities';
+import { skillTypes } from './skill-types';
 
-const modalities = (mods: string[]) => ({
-  create: mods.map((m) => ({
-    modality: { connect: { modalityId: m === 'futevolei' ? footvolleyId : altinhaId } },
-  })),
-})
-
-const skillTypes = (types: string[]) => ({
-  create: types.map((t) => ({
-    skillType: { connect: { skillTypeId: t === 'attack' ? attackType : defenseType } },
-  })),
-})
-
-export const altinhaAndFootvolleyResources: Prisma.SkillCreateInput[] = [
+export const altinhaAndFootvolleyResources = [
   {
     name: 'Shark Attack',
     skillGroup: 'resource',
     description: 'Ataque aéreo acrobático com a parte inferior do pé',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['attack']),
   },
   {
     name: 'Kamikaze Attack',
     description: 'Ataque aéreo acrobático com a parte superior do pé.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['attack']),
   },
   {
     name: 'Bicicleta',
     description: 'Ataque aéreo acrobático com a parte superior do pé simulando o ato de pedalar no ar.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['attack']),
   },
   {
@@ -50,14 +36,14 @@ export const altinhaAndFootvolleyResources: Prisma.SkillCreateInput[] = [
     name: 'Coxa Direita',
     description: 'Recepção ou levantamento com a coxa direita.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['defense']),
   },
   {
     name: 'Coxa Esquerda',
     description: 'Recepção ou levantamento com a coxa esquerda.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['defense']),
   },
   {
@@ -71,42 +57,42 @@ export const altinhaAndFootvolleyResources: Prisma.SkillCreateInput[] = [
     name: 'Saque com Efeito',
     description: 'Saque com técnicas que conferem dificuldade na recepção adversaria.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei']),
+    skillModalities: modalities(['footvolley']),
     skillTypes: skillTypes(['attack']),
   },
   {
     name: 'Pingo com Finta',
     description: 'Ataque imprevisível, próximo a rede tirando velocidade da bola e deixando-a cair próxima a rede.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei']),
+    skillModalities: modalities(['footvolley']),
     skillTypes: skillTypes(['attack']),
   },
   {
     name: 'Chilena Direita',
     description: 'Recepção ou levantamento com parte externa do pé direito.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['defense']),
   },
   {
     name: 'Chilena Esquerda',
     description: 'Recepção ou levantamento com parte externa do pé esquerdo.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['defense']),
   },
   {
     name: 'Peito do pé Direito',
     description: 'Recepção ou levantamento com parte superior do pé direito.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['defense']),
   },
   {
     name: 'Peito do pé Esquerdo',
     description: 'Recepção ou levantamento com parte superior do pé esquerdo.',
     skillGroup: 'resource',
-    skillModalities: modalities(['futevolei', 'altinha']),
+    skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['defense']),
   },
   {
@@ -179,4 +165,6 @@ export const altinhaAndFootvolleyResources: Prisma.SkillCreateInput[] = [
     skillModalities: modalities(['altinha']),
     skillTypes: skillTypes(['defense']),
   },
-]
+] as const satisfies readonly Prisma.SkillCreateInput[]
+
+export type ValidAltinhaAndFootvolleyResourceName = typeof altinhaAndFootvolleyResources[number]['name'];
