@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 
-import { env } from "./config/env"
+import { env } from "./env"
 import { registerPlugins } from "./plugins"
 
 export function buildApp() {

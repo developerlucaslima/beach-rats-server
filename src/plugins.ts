@@ -3,7 +3,7 @@ import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import type { FastifyInstance } from 'fastify'
 
-import { env } from './config/env'
+import { env } from './env'
 
 export function registerPlugins(app: FastifyInstance) {
   app.register(fastifyCors, {
