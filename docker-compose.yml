@@ -1,15 +1,13 @@
-version: '3.8'
-
 services:
   postgresql:
     image: bitnami/postgresql:latest
-    container_name: postgresql
+    container_name: beachrats-postgres
     volumes:
-      - db:/var/lib/postgresql
+      - db:/bitnami/postgresql
     environment:
-      POSTGRESQL_USER: beachrats
-      POSTGRESQL_PASSWORD: beachrats
-      POSTGRESQL_DATABASE: beachrats
+      POSTGRESQL_USER: ${POSTGRESQL_USER}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_DATABASE: ${POSTGRESQL_DATABASE}
     ports:
       - "5432:5432"
     networks:
