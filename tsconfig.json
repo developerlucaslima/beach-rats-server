@@ -16,6 +16,6 @@
   "include": [
     "src/**/*",
     ".eslintrc.cjs",
-    "prisma/seed",
+    "prisma/seed.ts",
   ]
 }
