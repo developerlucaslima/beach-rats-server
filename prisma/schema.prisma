@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -19,11 +18,9 @@ enum SubscriptionPlan {
   pro
 }
 
-enum Modality {
-  footvolley
-  altinha
-  beach_tennis
-  beach_volleyball
+enum SkillGroupTag {
+  fundamental
+  resource
 }
 
 enum Side {
@@ -39,17 +36,7 @@ enum Category {
   pro
 }
 
-enum SkillType {
-  attack
-  defense
-}
-
-enum SkillGroup {
-  fundamental
-  resource
-}
-
-enum ConditionType {
+enum PlayerConditionType {
   physical
   mental
 }
@@ -67,18 +54,19 @@ model Player {
   longitude             Float?
   role                  Role             @default(athlete)
   subscriptionPlan      SubscriptionPlan @default(free)
-  mainModality          Modality?
+  mainModalityId        String?
   physicalConditionName String?
   mentalConditionName   String?
 
   playerModalityStats PlayerModalityStat[]
 
-  country Country? @relation(fields: [countryCode], references: [code])
-
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  country           Country?         @relation(fields: [countryCode], references: [code])
   physicalCondition PlayerCondition? @relation("PhysicalCondition", fields: [physicalConditionName], references: [name])
   mentalCondition   PlayerCondition? @relation("MentalCondition", fields: [mentalConditionName], references: [name])
+  mainModality      Modality?        @relation(fields: [mainModalityId], references: [modalityId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("players")
 }
@@ -94,44 +82,66 @@ model Country {
 }
 
 model PlayerCondition {
-  name          String        @id
-  emoji         String
-  conditionType ConditionType
+  name                String              @id
+  emoji               String
+  playerConditionType PlayerConditionType
 
   physicalPlayers Player[] @relation("PhysicalCondition")
   mentalPlayers   Player[] @relation("MentalCondition")
 
-  @@unique([name, conditionType])
+  @@unique([name, playerConditionType])
   @@map("player_conditions")
 }
 
-model SkillModalityTag {
-  skillName String
-  modality  Modality
+model Modality {
+  modalityId  String @id
+  description String
 
-  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+  Player                Player[]
+  SkillModalityRelation SkillModalityRelation[]
+  PlayerModalityStat    PlayerModalityStat[]
 
-  @@id([skillName, modality])
-  @@map("skill_modality_tags")
+  @@map("modalities")
 }
 
-model SkillTypeTag {
-  skillName String
-  skillType SkillType
+model SkillModalityRelation {
+  skillName  String
+  modalityId String
 
-  skill Skill @relation(fields: [skillName], references: [name], onDelete: Cascade)
+  skill    Skill    @relation(fields: [skillName], references: [name], onDelete: Cascade)
+  modality Modality @relation(fields: [modalityId], references: [modalityId], onDelete: Cascade)
 
-  @@id([skillName, skillType])
-  @@map("skill_type_tags")
+  @@id([skillName, modalityId])
+  @@map("skill_modality_relations")
+}
+
+model SkillType {
+  skillTypeId String @id
+  description String
+
+  SkillSkillTypeRelation SkillSkillTypeRelation[]
+
+  @@map("skill_types")
+}
+
+model SkillSkillTypeRelation {
+  skillName   String
+  skillTypeId String
+
+  skill     Skill     @relation(fields: [skillName], references: [name], onDelete: Cascade)
+  skillType SkillType @relation(fields: [skillTypeId], references: [skillTypeId])
+
+  @@id([skillName, skillTypeId])
+  @@map("skill_skill_type_relations")
 }
 
 model Skill {
   name        String @id
   description String
 
-  skillGroup        SkillGroup
-  skillModalityTags SkillModalityTag[]
-  skillTypeTags     SkillTypeTag[]
+  skillGroup        SkillGroupTag
+  skillModalities   SkillModalityRelation[]
+  skillTypes        SkillSkillTypeRelation[]
   playerSkillMonths PlayerSkillMonth[]
 
   createdAt DateTime @default(now())
@@ -141,20 +151,19 @@ model Skill {
 }
 
 model PlayerModalityStat {
-  id       String   @id @default(cuid())
-  playerId String
-  modality Modality
+  id         String @id @default(cuid())
+  playerId   String
+  modalityId String
 
   playerModalityMonths PlayerModalityMonth[]
 
-  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  modality Modality @relation(fields: [modalityId], references: [modalityId], onDelete: Cascade)
+  player   Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([playerId, modality])
   @@index([playerId])
-  @@index([modality])
   @@map("player_modality_stats")
 }
 
