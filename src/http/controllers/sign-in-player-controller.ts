@@ -4,7 +4,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { mapAuthenticatedPlayerResponse } from '../dto/player-dto'
 import { setTokenCookie } from '../jwt/set-refresh-token-cookie'
-import { REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRATION_SECONDS } from '../jwt/jwt-config'
+import { ACCESS_TOKEN_EXPIRATION_SECONDS, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRATION_SECONDS } from '../jwt/jwt-config'
 
 const signInPlayerSchema = z.object({
 	email: z.string().email(),
@@ -29,6 +29,7 @@ export async function playerAuthenticateController(request: FastifyRequest, repl
 		{
 			sign: {
 				sub: player.id,
+				expiresIn: `${ACCESS_TOKEN_EXPIRATION_SECONDS}s`,
 			},
 		},
 	)

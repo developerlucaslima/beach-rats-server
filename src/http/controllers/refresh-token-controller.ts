@@ -1,6 +1,6 @@
 import type { FastifyRequest, FastifyReply } from 'fastify'
 import { setTokenCookie } from '../jwt/set-refresh-token-cookie'
-import { REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRATION_SECONDS } from '../jwt/jwt-config'
+import { ACCESS_TOKEN_EXPIRATION_SECONDS, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRATION_SECONDS } from '../jwt/jwt-config'
 
 export async function refreshTokenController(request: FastifyRequest, reply: FastifyReply) {
   await request.jwtVerify({ onlyCookie: true })
@@ -15,6 +15,7 @@ export async function refreshTokenController(request: FastifyRequest, reply: Fas
     {
       sign: {
         sub,
+        expiresIn: `${ACCESS_TOKEN_EXPIRATION_SECONDS}s`,
       },
     },
   )
