@@ -11,7 +11,7 @@ const signInPlayerSchema = z.object({
 	password: z.string().min(6),
 })
 
-export async function playerAuthenticateController(request: FastifyRequest, reply: FastifyReply) {
+export async function signInPlayerController(request: FastifyRequest, reply: FastifyReply) {
 	const { email, password } = signInPlayerSchema.parse(request.body)
 	const signInPlayerUseCase = makePlayerSignIn()
 	const { player } = await signInPlayerUseCase.execute({
