@@ -4,6 +4,7 @@ import fastifyJwt from '@fastify/jwt'
 import type { FastifyInstance } from 'fastify'
 
 import { env } from './env'
+import { globalErrorHandler } from './http/errors/global-error-handler'
 
 export function registerPlugins(app: FastifyInstance) {
   app.register(fastifyCors, {
@@ -20,4 +21,6 @@ export function registerPlugins(app: FastifyInstance) {
   })
 
   app.register(fastifyCookie)
+
+  app.setErrorHandler(globalErrorHandler)
 }
