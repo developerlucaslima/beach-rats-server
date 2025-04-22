@@ -11,10 +11,10 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - tatui-network
+      - beachrats-network
 
 networks:
-  tatui-network:
+  beachrats-network:
     driver: bridge
 
 volumes:
