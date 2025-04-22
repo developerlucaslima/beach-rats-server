@@ -1,5 +1,5 @@
 import { InvalidCredentialsException } from '@/core/errors/invalid-credentials-exception'
-import { makePlayerSignIn } from '@/core/factories/make-sign-in-player'
+import { makeSignInPlayer } from '@/core/factories/make-sign-in-player'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { mapAuthenticatedPlayerResponse } from '../dto/player-dto'
@@ -13,7 +13,7 @@ const signInPlayerSchema = z.object({
 
 export async function signInPlayerController(request: FastifyRequest, reply: FastifyReply) {
 	const { email, password } = signInPlayerSchema.parse(request.body)
-	const signInPlayerUseCase = makePlayerSignIn()
+	const signInPlayerUseCase = makeSignInPlayer()
 	const { player } = await signInPlayerUseCase.execute({
 		email,
 		password,

@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { z } from "zod"
 
-import { makePlayerSignUp } from "@/core/factories/make-sign-up-player"
+import { makeSignUpPlayer } from "@/core/factories/make-sign-up-player"
 import { ACCESS_TOKEN_EXPIRATION_SECONDS, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRATION_SECONDS } from "../jwt/jwt-config"
 import { mapAuthenticatedPlayerResponse } from "../dto/player-dto"
 import { setTokenCookie } from "../jwt/set-refresh-token-cookie"
@@ -18,7 +18,7 @@ export async function signUpPlayerController(
 ) {
   const { name, email, password } = signUpPlayerSchema.parse(request.body)
 
-  const signUpPlayerUseCase = makePlayerSignUp()
+  const signUpPlayerUseCase = makeSignUpPlayer()
   const { player } = await signUpPlayerUseCase.execute({ name, email, password })
 
   const jwtPayload = {

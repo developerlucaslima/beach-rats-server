@@ -16,14 +16,14 @@ interface SignInPlayerUseCaseResponse {
 }
 
 export class SignInPlayerUseCase {
-  constructor(private readonly playersRepository: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) { }
 
   async execute({
     email,
     password,
   }: SignInPlayerUseCaseRequest): Promise<SignInPlayerUseCaseResponse> {
     // It should prevent player authenticate with wrong email.
-    const player = await this.playersRepository.findByEmail(email)
+    const player = await this.playersRepo.findByEmail(email)
     if (!player) {
       throw new InvalidCredentialsException()
     }

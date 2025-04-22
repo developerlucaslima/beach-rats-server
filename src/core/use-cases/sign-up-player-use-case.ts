@@ -5,35 +5,35 @@ import type { IPlayersRepository } from "@/infrastructure/repositories/interface
 
 import { EmailNotAvailableException } from "../errors/email-not-available-exception";
 
-interface ISingUpPlayerUseCaseRequest {
+interface SignUpPlayerUseCaseRequest {
   name: string
   email: string
   password: string
 }
 
-interface ISingUpPlayerUseCaseResponse {
+interface SignUpPlayerUseCaseResponse {
   player: Player
 }
 
 export class SignUpPlayerUseCase {
-  constructor(private readonly playersRepository: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) { }
 
   async execute({
     name,
     email,
     password,
-  }: ISingUpPlayerUseCaseRequest): Promise<ISingUpPlayerUseCaseResponse> {
-    // It should hash player password upon registration.
-    const passwordHash = await hash(password, 6)
-
+  }: SignUpPlayerUseCaseRequest): Promise<SignUpPlayerUseCaseResponse> {
     // It should prevent a player register with a duplicate email.
-    const playerWithSameEmail = await this.playersRepository.findByEmail(email)
+    const playerWithSameEmail = await this.playersRepo.findByEmail(email)
     if (playerWithSameEmail) {
       throw new EmailNotAvailableException()
     }
 
+    // It should hash player password upon registration.
+    const passwordHash = await hash(password, 6)
+
     // It should allow to register a player.
-    const player = await this.playersRepository.create({
+    const player = await this.playersRepo.create({
       name,
       email,
       passwordHash,

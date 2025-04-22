@@ -1,9 +1,9 @@
 import { PrismaPlayersRepository } from "@/repositories/prisma/players-repository";
 import { SignInPlayerUseCase } from "@/use-cases/sign-in-player-use-case";
 
-export function makePlayerSignIn() {
-  const playersRepository = new PrismaPlayersRepository();
-  const playerSignInUseCase = new SignInPlayerUseCase(playersRepository);
+export function makeSignInPlayer() {
+  const prismaPlayersRepository = new PrismaPlayersRepository();
+  const signInPlayerUseCase = new SignInPlayerUseCase(prismaPlayersRepository);
 
-  return playerSignInUseCase;
+  return signInPlayerUseCase;
 }
