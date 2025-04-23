@@ -23,7 +23,7 @@ export class GetPlayerUseCase {
 
     // It should throw error when player not found by ID.
     if (!byId) {
-      throw new ResourceNotFoundException()
+      throw new ResourceNotFoundException('Player')
     }
 
     // It should return player without passwordHash.
