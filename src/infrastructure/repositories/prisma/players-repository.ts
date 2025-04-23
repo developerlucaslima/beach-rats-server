@@ -12,10 +12,43 @@ export class PrismaPlayersRepository implements IPlayersRepository {
     return player
   }
 
-  async findById(id: string) {
+  async updateProfile(args: { playerId: string; data: Prisma.PlayerUpdateInput }) {
+    const { playerId, data } = args
+    const player = await prisma.player.update({
+      where: { id: playerId },
+      data,
+    })
+    return player
+  }
+
+  async updatePassword(args: { playerId: string; passwordHash: string }) {
+    const { playerId, passwordHash } = args
+    const player = await prisma.player.update({
+      where: { id: playerId },
+      data: {
+        passwordHash,
+      }
+    })
+    return player
+  }
+
+
+  async attachGoogleAccount(args: { playerId: string; googleId: string; avatarUrl?: string }) {
+    const { playerId, googleId, avatarUrl } = args
+    const player = prisma.player.update({
+      where: { id: playerId },
+      data: {
+        googleId,
+        ...(avatarUrl && { avatarUrl }),
+      },
+    })
+    return player
+  }
+
+  async findById(playerId: string) {
     const player = await prisma.player.findUnique({
       where: {
-        id,
+        id: playerId,
       },
     })
     return player
@@ -39,15 +72,4 @@ export class PrismaPlayersRepository implements IPlayersRepository {
     return player
   }
 
-  async attachGoogleAccount(args: { playerId: string; googleId: string; avatarUrl?: string }) {
-    const { playerId, googleId, avatarUrl } = args
-    const player = prisma.player.update({
-      where: { id: playerId },
-      data: {
-        googleId,
-        ...(avatarUrl && { avatarUrl }),
-      },
-    })
-    return player
-  }
 }

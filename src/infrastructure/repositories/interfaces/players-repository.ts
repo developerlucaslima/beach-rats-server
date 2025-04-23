@@ -2,8 +2,12 @@ import type { Player, Prisma } from '@prisma/client'
 
 export interface IPlayersRepository {
   create(data: Prisma.PlayerUncheckedCreateInput): Promise<Player>
-  findById(id: string): Promise<Player | null>
+
+  updateProfile(args: { playerId: string, data: Prisma.PlayerUpdateInput }): Promise<Player>
+  updatePassword(args: { playerId: string, passwordHash: string }): Promise<Player>
+  attachGoogleAccount(args: { playerId: string, googleId: string, avatarUrl?: string }): Promise<Player>
+
+  findById(playerId: string): Promise<Player | null>
   findByEmail(email: string): Promise<Player | null>
   findByGoogleId(googleId: string): Promise<Player | null>
-  attachGoogleAccount(args: { playerId: string, googleId: string, avatarUrl?: string }): Promise<Player>
 }
