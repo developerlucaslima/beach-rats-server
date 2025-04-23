@@ -43,8 +43,10 @@ enum PlayerConditionType {
 
 model Player {
   id                    String           @id @default(cuid())
-  email                 String           @unique
   googleId              String?          @unique
+  email                 String           @unique
+  // emailVerified         Boolean          @default(false)
+  // username              String?          @unique
   name                  String
   passwordHash          String?
   avatarUrl             String?
@@ -69,8 +71,6 @@ model Player {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([googleId])
-  @@index([email])
   @@map("players")
 }
 
