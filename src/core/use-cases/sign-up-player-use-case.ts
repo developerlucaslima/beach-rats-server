@@ -30,7 +30,7 @@ export class SignUpPlayerUseCase {
     }
 
     // It should hash player password upon registration.
-    const hashedPassword = await hash(password, 6)
+    const hashedPassword = await hash(password, 8)
 
     // It should allow to register a player.
     const createdPlayer = await this.playersRepo.create({
