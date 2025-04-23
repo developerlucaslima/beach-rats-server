@@ -12,7 +12,7 @@ interface SignInPlayerUseCaseRequest {
 }
 
 interface SignInPlayerUseCaseResponse {
-  player: Player
+  player: Omit<Player, 'passwordHash'>
 }
 
 export class SignInPlayerUseCase {
@@ -23,18 +23,19 @@ export class SignInPlayerUseCase {
     password,
   }: SignInPlayerUseCaseRequest): Promise<SignInPlayerUseCaseResponse> {
     // It should prevent player authenticate with wrong email.
-    const player = await this.playersRepo.findByEmail(email)
-    if (!player) {
+    const byEmail = await this.playersRepo.findByEmail(email)
+    if (!byEmail) {
       throw new InvalidCredentialsException()
     }
 
     // It should prevent player authenticate with wrong password.
-    const doesPasswordsMatch = await compare(password, player.passwordHash)
-    if (!doesPasswordsMatch) {
+    const correctPassword = await compare(password, byEmail.passwordHash)
+    if (!correctPassword) {
       throw new InvalidCredentialsException()
     }
 
-    // It should allow player authenticate.
+    // It should return player without passwordHash.
+    const { passwordHash, ...player } = byEmail
     return {
       player,
     }

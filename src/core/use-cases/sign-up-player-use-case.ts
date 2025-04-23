@@ -12,7 +12,7 @@ interface SignUpPlayerUseCaseRequest {
 }
 
 interface SignUpPlayerUseCaseResponse {
-  player: Player
+  player: Omit<Player, 'passwordHash'>
 }
 
 export class SignUpPlayerUseCase {
@@ -24,21 +24,23 @@ export class SignUpPlayerUseCase {
     password,
   }: SignUpPlayerUseCaseRequest): Promise<SignUpPlayerUseCaseResponse> {
     // It should prevent a player register with a duplicate email.
-    const playerWithSameEmail = await this.playersRepo.findByEmail(email)
-    if (playerWithSameEmail) {
+    const byEmail = await this.playersRepo.findByEmail(email)
+    if (byEmail) {
       throw new EmailNotAvailableException()
     }
 
     // It should hash player password upon registration.
-    const passwordHash = await hash(password, 6)
+    const hashedPassword = await hash(password, 6)
 
     // It should allow to register a player.
-    const player = await this.playersRepo.create({
+    const createdPlayer = await this.playersRepo.create({
       name,
       email,
-      passwordHash,
+      passwordHash: hashedPassword,
     })
 
+    // It should return player without passwordHash.
+    const { passwordHash, ...player } = createdPlayer
     return {
       player,
     }
