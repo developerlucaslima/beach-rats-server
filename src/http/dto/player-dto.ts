@@ -1,10 +1,12 @@
 import type { Player } from "@prisma/client";
 
-export function mapAuthenticatedPlayerResponse(player: Player) {
+export function mapAuthenticatedPlayerResponse(player: Omit<Player, 'passwordHash'>) {
   return {
+    id: player.id,
+    googleId: player.googleId,
     name: player.name,
     email: player.email,
-    profileImage: player.profileImage,
+    avatarUrl: player.avatarUrl,
     bio: player.bio,
     age: player.age,
     countryCode: player.countryCode,
