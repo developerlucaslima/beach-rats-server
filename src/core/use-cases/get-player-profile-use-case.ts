@@ -4,20 +4,20 @@ import type { IPlayersRepository } from "@/infrastructure/repositories/interface
 
 import { ResourceNotFoundException } from "../errors/resource-not-found-exception";
 
-interface GetPlayerUseCaseRequest {
+interface GetPlayerProfileUseCaseRequest {
   playerId: string
 }
 
-interface GetPlayerUseCaseResponse {
+interface GetPlayerProfileUseCaseResponse {
   player: Omit<Player, 'passwordHash'>
 }
 
-export class GetPlayerUseCase {
+export class GetPlayerProfileUseCase {
   constructor(private readonly playersRepo: IPlayersRepository) { }
 
   async execute({
     playerId,
-  }: GetPlayerUseCaseRequest): Promise<GetPlayerUseCaseResponse> {
+  }: GetPlayerProfileUseCaseRequest): Promise<GetPlayerProfileUseCaseResponse> {
     // It should get a player by ID.
     const byId = await this.playersRepo.findById(playerId)
 
