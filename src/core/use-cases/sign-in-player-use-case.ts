@@ -35,9 +35,9 @@ export class SignInPlayerUseCase {
     }
 
     // It should return player without passwordHash.
-    const { passwordHash, ...player } = byEmail
+    const { passwordHash, ...safePlayer } = byEmail
     return {
-      player,
+      player: safePlayer,
     }
   }
 }

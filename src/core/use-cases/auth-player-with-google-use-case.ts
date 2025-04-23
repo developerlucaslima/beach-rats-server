@@ -12,7 +12,7 @@ interface AuthPlayerWithGoogleUseCaseRequest {
 }
 
 interface AuthPlayerWithGoogleUseCaseResponse {
-  player: Player
+  player: Omit<Player, 'passwordHash'>
 }
 
 export class AuthPlayerWithGoogleUseCase {
@@ -47,16 +47,17 @@ export class AuthPlayerWithGoogleUseCase {
     }
 
     // It should allow to register a player.
-    const player = await this.playersRepo.create({
+    const createdPlayer = await this.playersRepo.create({
       name,
       email,
       googleId,
       avatarUrl,
-      passwordHash: null,
     })
 
+    // It should return player without passwordHash.
+    const { passwordHash, ...safePlayer } = createdPlayer
     return {
-      player,
+      player: safePlayer,
     }
   }
 }

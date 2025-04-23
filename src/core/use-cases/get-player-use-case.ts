@@ -27,9 +27,9 @@ export class GetPlayerUseCase {
     }
 
     // It should return player without passwordHash.
-    const { passwordHash, ...player } = byId
+    const { passwordHash, ...safePlayer } = byId
     return {
-      player,
+      player: safePlayer,
     }
   }
 }

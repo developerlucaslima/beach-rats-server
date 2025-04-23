@@ -40,9 +40,9 @@ export class SignUpPlayerUseCase {
     })
 
     // It should return player without passwordHash.
-    const { passwordHash, ...player } = createdPlayer
+    const { passwordHash, ...safePlayer } = createdPlayer
     return {
-      player,
+      player: safePlayer,
     }
   }
 }
