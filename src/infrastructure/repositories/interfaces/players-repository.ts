@@ -4,7 +4,7 @@ export interface IPlayersRepository {
   create(data: Prisma.PlayerUncheckedCreateInput): Promise<Player>
 
   updateProfile(args: { playerId: string, data: Prisma.PlayerUpdateInput }): Promise<Player>
-  updatePassword(args: { playerId: string, passwordHash: string }): Promise<Player>
+  updatePassword(args: { playerId: string, passwordHash: string }): Promise<boolean>
   attachGoogleAccount(args: { playerId: string, googleId: string, avatarUrl?: string }): Promise<Player>
 
   findById(playerId: string): Promise<Player | null>

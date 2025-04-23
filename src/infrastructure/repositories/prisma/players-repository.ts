@@ -29,7 +29,7 @@ export class PrismaPlayersRepository implements IPlayersRepository {
         passwordHash,
       }
     })
-    return player
+    return Boolean(player)
   }
 
 
