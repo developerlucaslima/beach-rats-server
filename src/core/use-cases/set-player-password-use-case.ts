@@ -20,26 +20,24 @@ export class SetPlayerPasswordUseCase {
     playerId,
     newPassword,
   }: SetPlayerPasswordUseCaseRequest): Promise<SetPlayerPasswordUseCaseResponse> {
-    // It should get a player by ID.
+    // It should throw ResourceNotFoundException if the player does not exist.
     const byId = await this.playersRepo.findById(playerId)
-
-    // It should throw error when player not found by ID.
     if (!byId) {
       throw new ResourceNotFoundException('Player')
     }
 
-    // It should throw error when player already has a password.
+    // It should throw PasswordAlreadySetException if the player already has a password.
     if (byId.passwordHash) {
       throw new PasswordAlreadySetException()
     }
 
-    // It should hash player new password.
+    // It should hash the new password before saving.
     const newPasswordHash = await hash(newPassword, 8)
 
-    // It should update player with provided data.
+    // It should update the player's passwordHash in the database.
     const isUpdatedPlayer = await this.playersRepo.updatePassword({ playerId, passwordHash: newPasswordHash })
 
-    // It should return true or false.
+    // It should return success: true when the password is updated.
     return {
       success: isUpdatedPlayer,
     }

@@ -23,23 +23,23 @@ export class SignUpPlayerUseCase {
     email,
     password,
   }: SignUpPlayerUseCaseRequest): Promise<SignUpPlayerUseCaseResponse> {
-    // It should prevent a player register with a duplicate email.
+    // It should throw EmailNotAvailableException if the email is already registered.
     const byEmail = await this.playersRepo.findByEmail(email)
     if (byEmail) {
       throw new EmailNotAvailableException()
     }
 
-    // It should hash player password upon registration.
+    // It should hash the password before creating the player.
     const hashedPassword = await hash(password, 8)
 
-    // It should allow to register a player.
+    // It should create a new player with hashed password.
     const createdPlayer = await this.playersRepo.create({
       name,
       email,
       passwordHash: hashedPassword,
     })
 
-    // It should return player without passwordHash.
+    // It should return the created player without the passwordHash.
     const { passwordHash, ...safePlayer } = createdPlayer
     return {
       player: safePlayer,
