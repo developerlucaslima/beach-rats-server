@@ -45,28 +45,27 @@ model Player {
   id                    String           @id @default(cuid())
   googleId              String?          @unique
   email                 String           @unique
-  // emailVerified         Boolean          @default(false)
-  // username              String?          @unique
+  isEmailVerified       Boolean          @default(false)
+  username              String?          @unique
   name                  String
   passwordHash          String?
   avatarUrl             String?
   age                   Int?
   bio                   String?
-  countryCode           String?
   latitude              Float?
   longitude             Float?
   role                  Role             @default(athlete)
   subscriptionPlan      SubscriptionPlan @default(free)
-  mainModalityId        String?
+  countryCode           String?
   physicalConditionName String?
   mentalConditionName   String?
+  mainModalityId        String?
+  modalities            PlayerModality[]
 
-  playerModalityStats PlayerModalityStat[]
-
-  country           Country?         @relation(fields: [countryCode], references: [code])
-  physicalCondition PlayerCondition? @relation("PhysicalCondition", fields: [physicalConditionName], references: [name])
-  mentalCondition   PlayerCondition? @relation("MentalCondition", fields: [mentalConditionName], references: [name])
-  mainModality      Modality?        @relation(fields: [mainModalityId], references: [modalityId])
+  country           Country?         @relation("PlayerCountry", fields: [countryCode], references: [code])
+  physicalCondition PlayerCondition? @relation("PlayerPhysicalCondition", fields: [physicalConditionName], references: [name])
+  mentalCondition   PlayerCondition? @relation("PlayerMentalCondition", fields: [mentalConditionName], references: [name])
+  mainModality      Modality?        @relation("PlayerMainModality", fields: [mainModalityId], references: [modalityId])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -79,7 +78,7 @@ model Country {
   name  String
   emoji String
 
-  players Player[]
+  players Player[] @relation("PlayerCountry")
 
   @@map("countries")
 }
@@ -89,8 +88,8 @@ model PlayerCondition {
   emoji               String
   playerConditionType PlayerConditionType
 
-  physicalPlayers Player[] @relation("PhysicalCondition")
-  mentalPlayers   Player[] @relation("MentalCondition")
+  physicalPlayers Player[] @relation("PlayerPhysicalCondition")
+  mentalPlayers   Player[] @relation("PlayerMentalCondition")
 
   @@unique([name, playerConditionType])
   @@map("player_conditions")
@@ -100,9 +99,9 @@ model Modality {
   modalityId  String @id
   description String
 
-  Player                Player[]
+  Player                Player[]                @relation("PlayerMainModality")
   SkillModalityRelation SkillModalityRelation[]
-  PlayerModalityStat    PlayerModalityStat[]
+  PlayerModalityStat    PlayerModality[]
 
   @@map("modalities")
 }
@@ -153,7 +152,7 @@ model Skill {
   @@map("skills")
 }
 
-model PlayerModalityStat {
+model PlayerModality {
   id         String @id @default(cuid())
   playerId   String
   modalityId String
@@ -167,7 +166,7 @@ model PlayerModalityStat {
   updatedAt DateTime @updatedAt
 
   @@index([playerId])
-  @@map("player_modality_stats")
+  @@map("player_modalities")
 }
 
 model PlayerModalityMonth {
@@ -183,7 +182,7 @@ model PlayerModalityMonth {
 
   skillsDetails PlayerSkillMonth[]
 
-  playerModalityStat PlayerModalityStat @relation(fields: [playerModalityId], references: [id], onDelete: Cascade)
+  playerModalityStat PlayerModality @relation(fields: [playerModalityId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
