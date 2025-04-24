@@ -4,7 +4,7 @@ export class InvalidCredentialsException extends Error {
 	public readonly code: number
 
 	constructor() {
-		super('Oops! Invalid credentials.')
+		super('Invalid credentials.')
 		this.name = 'InvalidCredentialsException'
 		this.code = INVALID_CREDENTIALS_ERROR_CODE
 	}
