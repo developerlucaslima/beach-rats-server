@@ -23,15 +23,14 @@ export class PrismaPlayersRepository implements IPlayersRepository {
 
   async updatePassword(args: { playerId: string; passwordHash: string }) {
     const { playerId, passwordHash } = args
-    const player = await prisma.player.update({
+    await prisma.player.update({
       where: { id: playerId },
       data: {
         passwordHash,
       }
     })
-    return Boolean(player)
+    return true
   }
-
 
   async attachGoogleAccount(args: { playerId: string; googleId: string; avatarUrl?: string }) {
     const { playerId, googleId, avatarUrl } = args
@@ -43,6 +42,17 @@ export class PrismaPlayersRepository implements IPlayersRepository {
       },
     })
     return player
+  }
+
+  async setMainModality(args: { playerId: string; modalityId: string }) {
+    const { playerId, modalityId } = args
+    await prisma.player.update({
+      where: { id: playerId },
+      data: {
+        mainModalityId: modalityId,
+      }
+    })
+    return true
   }
 
   async findById(playerId: string) {

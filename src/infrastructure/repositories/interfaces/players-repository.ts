@@ -7,6 +7,8 @@ export interface IPlayersRepository {
   updatePassword(args: { playerId: string, passwordHash: string }): Promise<boolean>
   attachGoogleAccount(args: { playerId: string, googleId: string, avatarUrl?: string }): Promise<Player>
 
+  setMainModality(args: { playerId: string, modalityId: string }): Promise<boolean>
+
   findById(playerId: string): Promise<Player | null>
   findByEmail(email: string): Promise<Player | null>
   findByGoogleId(googleId: string): Promise<Player | null>
