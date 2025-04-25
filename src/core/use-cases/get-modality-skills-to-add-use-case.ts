@@ -40,7 +40,7 @@ export class GetModalitySkillsToAddUseCase {
     }
 
     // It should return all skills related to the specified modality.
-    const skills = await this.skillsRepo.findAllByModalityId(modalityId)
+    const skills = await this.skillsRepo.findManyByModalityId(modalityId)
     return { skills }
   }
 }
