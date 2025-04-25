@@ -1,11 +1,22 @@
-import { ApolloServer } from '@apollo/server'
-import { startStandaloneServer } from '@apollo/server/standalone';
-import { typeDefs } from "@/graphql/schema"
-import { resolvers } from "@/graphql/resolvers"
-import { env } from './config/env';
+import Fastify from 'fastify'
 
-const server = new ApolloServer({ resolvers, typeDefs });
-const { url } = await startStandaloneServer(server, {
-  listen: { port: env.PORT },
-});
-console.log(`🚀  Server ready at: ${url}`);
+import { env } from "./env"
+import { registerPlugins } from "./plugins"
+
+export function buildApp() {
+  const app = Fastify({ logger: true })
+  registerPlugins(app)
+  return app
+}
+
+const startApp = async () => {
+  const app = buildApp()
+  try {
+    await app.listen({ host: '0.0.0.0', port: env.PORT })
+  } catch (err) {
+    app.log.error(err)
+    process.exit(1)
+  }
+}
+
+startApp()
