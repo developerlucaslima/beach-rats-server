@@ -97,7 +97,7 @@ model PlayerCondition {
 
 model Modality {
   id          String @id @default(cuid())
-  name        String
+  name        String @unique
   description String
 
   Player                Player[]                @relation("PlayerMainModality")
@@ -120,7 +120,7 @@ model SkillModalityRelation {
 
 model SkillType {
   id          String @id @default(cuid())
-  type        String
+  type        String @unique
   description String
 
   SkillSkillTypeRelation SkillSkillTypeRelation[]
