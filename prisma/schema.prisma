@@ -119,7 +119,8 @@ model SkillModalityRelation {
 }
 
 model SkillType {
-  skillTypeId String @id
+  id          String @id @default(cuid())
+  type        String
   description String
 
   SkillSkillTypeRelation SkillSkillTypeRelation[]
@@ -128,13 +129,13 @@ model SkillType {
 }
 
 model SkillSkillTypeRelation {
-  skillId     String
-  skillTypeId String
+  skillId String
+  typeId  String
 
   skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  skillType SkillType @relation(fields: [skillTypeId], references: [skillTypeId])
+  skillType SkillType @relation(fields: [typeId], references: [id])
 
-  @@id([skillId, skillTypeId])
+  @@id([skillId, typeId])
   @@map("skill_skill_type_relations")
 }
 
