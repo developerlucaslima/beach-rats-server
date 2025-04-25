@@ -201,11 +201,11 @@ model PlayerModalityMonth {
   playerModalityId String
   month            DateTime
 
-  attackScore    Int
-  defenseScore   Int
-  skillsScore    Int
-  resourcesScore Int
-  overallScore   Int
+  fundamentalsScore Int
+  resourcesScore    Int
+  attackScore       Int
+  defenseScore      Int
+  overallScore      Int
 
   skillsDetails PlayerSkillMonth[]
 
