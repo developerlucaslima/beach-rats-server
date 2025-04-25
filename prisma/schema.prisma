@@ -23,6 +23,11 @@ enum SkillGroupTag {
   resource
 }
 
+enum SkillTypeTag {
+  attack
+  defense
+}
+
 enum Side {
   right
   left
@@ -119,8 +124,8 @@ model SkillModalityRelation {
 }
 
 model SkillType {
-  id          String @id @default(cuid())
-  type        String @unique
+  id          String       @id @default(cuid())
+  type        SkillTypeTag @unique
   description String
 
   SkillSkillTypeRelation SkillSkillTypeRelation[]
