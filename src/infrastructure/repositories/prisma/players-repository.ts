@@ -12,6 +12,33 @@ export class PrismaPlayersRepository implements IPlayersRepository {
     return player
   }
 
+  async findById(playerId: string) {
+    const player = await prisma.player.findUnique({
+      where: {
+        id: playerId,
+      },
+    })
+    return player
+  }
+
+  async findByEmail(email: string) {
+    const player = await prisma.player.findUnique({
+      where: {
+        email,
+      },
+    })
+    return player
+  }
+
+  async findByGoogleId(googleId: string) {
+    const player = await prisma.player.findUnique({
+      where: {
+        googleId
+      }
+    })
+    return player
+  }
+
   async updateProfile(args: { playerId: string; data: Prisma.PlayerUpdateInput }) {
     const { playerId, data } = args
     const player = await prisma.player.update({
@@ -54,32 +81,4 @@ export class PrismaPlayersRepository implements IPlayersRepository {
     })
     return true
   }
-
-  async findById(playerId: string) {
-    const player = await prisma.player.findUnique({
-      where: {
-        id: playerId,
-      },
-    })
-    return player
-  }
-
-  async findByEmail(email: string) {
-    const player = await prisma.player.findUnique({
-      where: {
-        email,
-      },
-    })
-    return player
-  }
-
-  async findByGoogleId(googleId: string) {
-    const player = await prisma.player.findUnique({
-      where: {
-        googleId
-      }
-    })
-    return player
-  }
-
 }
