@@ -1,5 +1,5 @@
 import { prisma } from "@/infrastructure/database/prisma"
-import type { ISkillsRepository } from "../interfaces/skills-repository"
+import type { ISkillsRepository } from "@interfaces-repo/skills-repository"
 
 export class PrismaSkillsRepository implements ISkillsRepository {
   async findById(skillId: string) {
