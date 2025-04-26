@@ -1,7 +1,8 @@
-import type { PlayerModality, Prisma } from "@prisma/client";
+import type { AddCompleteModalityFlowData } from "../types/player-modalities-types";
 
 export interface IPlayerModalitiesRepository {
-  add(data: Prisma.PlayerModalityUncheckedCreateInput): Promise<PlayerModality>
-  hasModalityForPlayer(args: { playerId: string; modalityId: string }): Promise<boolean>
+  addCompletePlayerModalityFlow(data: AddCompleteModalityFlowData)
+    : Promise<{ playerModalityId: string, modalityMonthId: string }>
+  hasModalityForPlayer(params: { playerId: string; modalityId: string }): Promise<boolean>
   countModalitiesForPlayer(playerId: string): Promise<number | null>
 }
