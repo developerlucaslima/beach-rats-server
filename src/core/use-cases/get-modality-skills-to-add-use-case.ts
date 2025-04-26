@@ -11,7 +11,7 @@ interface GetModalitySkillsToAddUseCaseRequest {
 }
 
 interface GetModalitySkillsToAddUseCaseResponse {
-  skills: Skill[] | null
+  skillsByModality: Skill[] | null
 }
 
 export class GetModalitySkillsToAddUseCase {
@@ -39,8 +39,12 @@ export class GetModalitySkillsToAddUseCase {
       throw new BusinessRuleException('Modality limit reached.')
     }
 
-    // It should return all skills related to the specified modality.
-    const skills = await this.skillsRepo.findManyByModalityId(modalityId)
-    return { skills }
+    // It should throw ResourceNotFoundException if no skills are found for the given modality.
+    const skillsByModality = await this.skillsRepo.findManyByModalityId(modalityId)
+    if (!skillsByModality.length) {
+      throw new ResourceNotFoundException('Skills for Modality')
+    }
+
+    return { skillsByModality }
   }
 }
