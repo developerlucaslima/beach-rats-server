@@ -1,5 +1,5 @@
 import { prisma } from "@/infrastructure/database/prisma"
-import type { IPlayerModalitiesRepository } from "@interfaces-repo/player-modalities-repository"
+import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
 import type { PlayerModalityCreateParams } from "@/shared/app-types/player-modalities-types"
 
 export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesRepository {

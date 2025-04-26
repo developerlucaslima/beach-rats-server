@@ -1,6 +1,6 @@
 import { prisma } from '@/infrastructure/database/prisma'
 
-import type { IPlayersRepository } from '@interfaces-repo/players-repository'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
 import type { PlayerCreateParams, PlayerUpdateParams } from '@app-types/players-types'
 
 export class PrismaPlayersRepository implements IPlayersRepository {
