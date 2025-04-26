@@ -168,10 +168,10 @@ model Skill {
   name        String
   description String
 
-  skillGroup        SkillGroupTag
-  skillModalities   SkillModalityRelation[]
-  skillTypes        SkillSkillTypeRelation[]
-  playerSkillMonths PlayerSkillMonth[]
+  skillGroup            SkillGroupTag
+  skillModalities       SkillModalityRelation[]
+  skillTypes            SkillSkillTypeRelation[]
+  playerSkillMonthStats PlayerSkillMonthStats[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -184,7 +184,7 @@ model PlayerModality {
   playerId   String
   modalityId String
 
-  playerModalityMonths PlayerModalityMonth[]
+  playerModalityMonthStats PlayerModalityMonthStats[]
 
   modality Modality @relation(fields: [modalityId], references: [id], onDelete: Cascade)
   player   Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
@@ -196,7 +196,7 @@ model PlayerModality {
   @@map("player_modalities")
 }
 
-model PlayerModalityMonth {
+model PlayerModalityMonthStats {
   id               String   @id @default(cuid())
   playerModalityId String
   month            DateTime
@@ -207,7 +207,7 @@ model PlayerModalityMonth {
   defenseScore      Int
   overallScore      Int
 
-  skillsDetails PlayerSkillMonth[]
+  playerSkillMonthStats PlayerSkillMonthStats[]
 
   playerModality PlayerModality @relation(fields: [playerModalityId], references: [id], onDelete: Cascade)
 
@@ -221,14 +221,14 @@ model PlayerModalityMonth {
   @@map("player_modality_months")
 }
 
-model PlayerSkillMonth {
+model PlayerSkillMonthStats {
   id                    String   @id @default(cuid())
   category              Category
   playerModalityMonthId String
   skillId               String
 
-  playerModalityMonth PlayerModalityMonth @relation(fields: [playerModalityMonthId], references: [id], onDelete: Cascade)
-  skill               Skill               @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  playerModalityMonthStats PlayerModalityMonthStats @relation(fields: [playerModalityMonthId], references: [id], onDelete: Cascade)
+  skill                    Skill                    @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
