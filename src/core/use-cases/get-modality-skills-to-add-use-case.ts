@@ -1,9 +1,9 @@
-import type { IPlayersRepository } from "@repositories/interfaces/players-repository"
-import type { Skill } from "@prisma/client"
+import type { IPlayersRepository } from "@interfaces-repo/players-repository"
 import { ResourceNotFoundException } from "@errors/resource-not-found-exception"
-import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
-import type { ISkillsRepository } from "@repositories/interfaces/skills-repository"
+import type { IPlayerModalitiesRepository } from "@interfaces-repo/player-modalities-repository"
+import type { ISkillsRepository } from "@interfaces-repo/skills-repository"
 import { BusinessRuleException } from "@errors/business-rules-exception"
+import type { Skill } from "@app-types/skills-types"
 
 interface GetModalitySkillsToAddUseCaseRequest {
   playerId: string
@@ -29,11 +29,11 @@ export class GetModalitySkillsToAddUseCase {
     }
 
     // It should throw BusinessRuleException when the modality is already linked to the player.
-    const hasModality = await this.playerModalitiesRepo.hasModalityForPlayer({ playerId, modalityId })
+    const hasModality = await this.playerModalitiesRepo.hasPlayerModality({ playerId, modalityId })
     if (hasModality) throw new BusinessRuleException('Modality already linked.')
 
     // It should throw BusinessRuleException when the player exceeds the modality limit based on their subscription plan.
-    const totalModalities = await this.playerModalitiesRepo.countModalitiesForPlayer(playerId)
+    const totalModalities = await this.playerModalitiesRepo.countModalitiesByPlayerId(playerId)
     const maxModalities = playerById.subscriptionPlan === 'free' ? 2 : Infinity
     if (totalModalities >= maxModalities) {
       throw new BusinessRuleException('Modality limit reached.')

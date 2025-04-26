@@ -1,8 +1,7 @@
-import type { Player } from "@prisma/client";
-
 import type { IPlayersRepository } from "@interfaces-repo/players-repository";
 
 import { ResourceNotFoundException } from "@errors/resource-not-found-exception";
+import type { Player } from "@app-types/players-types";
 
 interface GetPlayerProfileUseCaseRequest {
   playerId: string

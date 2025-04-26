@@ -1,8 +1,7 @@
-import type { Player } from "@prisma/client";
-
-import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
+import type { IPlayersRepository } from "@interfaces-repo/players-repository";
 
 import { EmailNotAvailableException } from "@errors/email-not-available-exception";
+import type { Player } from "@app-types/players-types";
 
 interface AuthPlayerWithGoogleUseCaseRequest {
   name: string
