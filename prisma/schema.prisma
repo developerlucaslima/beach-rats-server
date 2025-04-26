@@ -218,7 +218,7 @@ model PlayerModalityMonthStats {
   @@index([playerModalityId])
   @@index([month])
   @@index([createdAt])
-  @@map("player_modality_months")
+  @@map("player_modalities_months_stats")
 }
 
 model PlayerSkillMonthStats {
@@ -237,5 +237,5 @@ model PlayerSkillMonthStats {
   @@index([playerModalityMonthId])
   @@index([skillId])
   @@index([createdAt])
-  @@map("player_skill_months")
+  @@map("player_skills_months_stats")
 }
