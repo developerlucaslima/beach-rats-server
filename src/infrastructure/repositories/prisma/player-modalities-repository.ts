@@ -10,7 +10,7 @@ export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesReposi
         data: { playerId, modalityId }
       })
 
-      const playerModalityMonth = await tx.playerModalityMonth.create({
+      const playerModalityMonthStats = await tx.playerModalityMonthStats.create({
         data: {
           month: new Date(),
           playerModalityId: playerModality.id,
@@ -23,12 +23,12 @@ export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesReposi
       })
 
       const skillsData = skillsIdsWithCategory.map(skill => ({
-        playerModalityMonthId: playerModalityMonth.id,
+        playerModalityMonthId: playerModalityMonthStats.id,
         skillId: skill.skillId,
         category: skill.category
       }))
 
-      await tx.playerSkillMonth.createMany({ data: skillsData })
+      await tx.playerSkillMonthStats.createMany({ data: skillsData })
 
       return true
     })
