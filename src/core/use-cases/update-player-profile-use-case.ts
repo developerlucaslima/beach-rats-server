@@ -1,4 +1,4 @@
-import type { IPlayersRepository } from "@interfaces-repo/players-repository";
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
 
 import { ResourceNotFoundException } from "@errors/resource-not-found-exception";
 import type { Player } from "@app-types/players-types";

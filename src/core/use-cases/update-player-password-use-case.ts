@@ -1,4 +1,4 @@
-import type { IPlayersRepository } from "@interfaces-repo/players-repository";
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
 import { compare, hash } from "bcryptjs";
 
 import { ResourceNotFoundException } from "@errors/resource-not-found-exception";

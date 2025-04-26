@@ -1,6 +1,6 @@
 import { compare } from "bcryptjs";
 
-import type { IPlayersRepository } from "@interfaces-repo/players-repository";
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
 
 import { InvalidCredentialsException } from "@errors/invalid-credentials-exception";
 import type { Player } from "@app-types/players-types";

@@ -1,7 +1,7 @@
-import type { IPlayersRepository } from "@interfaces-repo/players-repository"
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository"
 import { ResourceNotFoundException } from "@errors/resource-not-found-exception"
-import type { IPlayerModalitiesRepository } from "@interfaces-repo/player-modalities-repository"
-import type { ISkillsRepository } from "@interfaces-repo/skills-repository"
+import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
+import type { ISkillsRepository } from "@repositories/interfaces/skills-repository"
 import { BusinessRuleException } from "@errors/business-rules-exception"
 import type { Skill } from "@app-types/skills-types"
 

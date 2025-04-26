@@ -1,5 +1,5 @@
-import type { IPlayerModalitiesRepository } from "@interfaces-repo/player-modalities-repository"
-import type { IPlayersRepository } from "@interfaces-repo/players-repository"
+import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository"
 import { ResourceNotFoundException } from "@errors/resource-not-found-exception"
 import { BusinessRuleException } from "@errors/business-rules-exception"
 import type { PlayerModality } from "@app-types/player-modalities-types"
