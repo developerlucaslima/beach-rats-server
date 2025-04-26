@@ -5,7 +5,7 @@ import type { AddCompleteModalityFlowData } from "../types/player-modalities-typ
 export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesRepository {
   async addCompletePlayerModalityFlow(data: AddCompleteModalityFlowData) {
     const { playerId, modalityId, skillsIdsWithCategory, playerModalityStats } = data
-    const createdRecords = await prisma.$transaction(async (tx) => {
+    const isTransactionComplete = await prisma.$transaction(async (tx) => {
       const playerModality = await tx.playerModality.create({
         data: { playerId, modalityId }
       })
@@ -30,13 +30,10 @@ export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesReposi
 
       await tx.playerSkillMonth.createMany({ data: skillsData })
 
-      return {
-        playerModalityId: playerModality.id,
-        modalityMonthId: playerModalityMonth.id
-      }
+      return true
     })
 
-    return createdRecords
+    return isTransactionComplete
   }
 
   async hasModalityForPlayer({ playerId, modalityId }: { playerId: string, modalityId: string }) {
