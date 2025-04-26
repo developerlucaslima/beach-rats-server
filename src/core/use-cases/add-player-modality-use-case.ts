@@ -1,33 +1,27 @@
 import type { IPlayerModalitiesRepository } from "@/infrastructure/repositories/interfaces/player-modalities-repository"
 import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository"
-import type { StatsCalculatorService } from "@/infrastructure/services/stats-calculator-service"
-import type { Category } from "@prisma/client"
-import { ResourceNotFoundException } from "../errors/resource-not-found-exception"
-import { BusinessRuleException } from "../errors/business-rules-exception"
-import type { ISkillsRepository } from "@/infrastructure/repositories/interfaces/skills-repository"
+import { ResourceNotFoundException } from "@/errors/resource-not-found-exception"
+import { BusinessRuleException } from "@/errors/business-rules-exception"
+import type { PlayerModality } from "@/types/player-modalities-types"
 
 interface AddPlayerModalityUseCaseRequest {
   playerId: string
   modalityId: string
-  skillsIdsWithCategory: { skillId: string; category: Category }[]
 }
 
 interface AddPlayerModalityUseCaseResponse {
-  success: boolean
+  playerModality: PlayerModality
 }
 
 export class AddPlayerModalityUseCase {
   constructor(
     private readonly playersRepo: IPlayersRepository,
     private readonly playerModalitiesRepo: IPlayerModalitiesRepository,
-    private readonly skillsRepo: ISkillsRepository,
-    private readonly statsCalculator: StatsCalculatorService
   ) { }
 
   async execute({
     playerId,
     modalityId,
-    skillsIdsWithCategory
   }: AddPlayerModalityUseCaseRequest): Promise<AddPlayerModalityUseCaseResponse> {
     // It should throw ResourceNotFoundException if the player does not exist.
     const player = await this.playersRepo.findById(playerId)
@@ -48,27 +42,14 @@ export class AddPlayerModalityUseCase {
       throw new BusinessRuleException('Modality limit reached.')
     }
 
-    // It should throw ResourceNotFoundException if no skills are found for the given modality.
-    const skillsByModality = await this.skillsRepo.findManyByModalityId(modalityId)
-    if (!skillsByModality.length) {
-      throw new ResourceNotFoundException('Skills for Modality')
-    }
+    // It should set the modality as main when adding the first modality.
+    const isFirstModality = totalModalities === 0
+    const playerModality = isFirstModality
+      ? await this.playerModalitiesRepo.addAsMainModality({ modalityId, playerId })
+      // It should not set as main when the player already has at least one modality.
+      : await this.playerModalitiesRepo.add({ modalityId, playerId })
 
-    // It should calculate player statistics based on provided skills.
-    const { playerModalityStats } = await this.statsCalculator.calculate({
-      skillsByModality,
-      skillsIdsWithCategory
-    })
-
-    // It should persist player modality, stats, and skills in a single transactional flow.
-    const success = await this.playerModalitiesRepo.addCompletePlayerModalityFlow({
-      playerId,
-      modalityId,
-      skillsIdsWithCategory,
-      playerModalityStats
-    })
-
-    // It should return success: true when the modality is successfully added.
-    return { success }
+    // It should return the created playerModality when the modality is successfully added.
+    return { playerModality }
   }
 }
