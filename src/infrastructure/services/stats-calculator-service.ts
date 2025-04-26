@@ -1,31 +1,28 @@
 import type { Category } from '@prisma/client'
 import type { ISkillsRepository } from '../repositories/interfaces/skills-repository'
+import type { PlayerModalityStats, SkillIdWithCategory } from '../repositories/types/player-modalities-types'
+import type { SkillWithSkillTypes } from '../repositories/types/skills-types'
 
 export interface StatsCalculatorRequest {
-  modalityId: string
-  skillsIdsWithCategory: { skillId: string; category: Category }[]
+  skillsByModality: SkillWithSkillTypes[]
+  skillsIdsWithCategory: SkillIdWithCategory[]
 }
 
 export interface StatsCalculatorResponse {
-  attackScore: number
-  defenseScore: number
-  fundamentalsScore: number
-  resourcesScore: number
-  overallScore: number
+  playerModalityStats: PlayerModalityStats
 }
 
 const CATEGORY_SCORE: Record<Category, number> = {
   none: 0, beginner: 25, intermediate: 50, advanced: 75, pro: 100,
 }
 
-const WEIGHT = { fundamental: 0.9, resource: 0.1 }
+const WEIGHT = {
+  fundamental: 0.9, resource: 0.1
+}
 
 export class StatsCalculatorService {
-  constructor(private readonly skillsRepo: ISkillsRepository) { }
-
-  async calculate({ modalityId, skillsIdsWithCategory }: StatsCalculatorRequest): Promise<StatsCalculatorResponse> {
+  async calculate({ skillsByModality, skillsIdsWithCategory }: StatsCalculatorRequest): Promise<StatsCalculatorResponse> {
     const skillsIdsWithCategoryMap = new Map(skillsIdsWithCategory.map(s => [s.skillId, s.category]))
-    const skillsByModality = await this.skillsRepo.findManyByModalityId(modalityId)
 
     const bucket = () => ({ sum: 0, cnt: 0 })
     const stats = {
@@ -72,6 +69,6 @@ export class StatsCalculatorService {
     const defenseScore = WEIGHT.fundamental * calculateAverage('defenseFundamentalBucket') + WEIGHT.resource * calculateAverage('defenseResourceBucket')
     const overallScore = WEIGHT.fundamental * fundamentalsScore + WEIGHT.resource * resourcesScore
 
-    return { attackScore, defenseScore, resourcesScore, fundamentalsScore, overallScore }
+    return { playerModalityStats: { attackScore, defenseScore, resourcesScore, fundamentalsScore, overallScore } }
   }
 }
