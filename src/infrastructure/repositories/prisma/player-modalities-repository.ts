@@ -1,52 +1,45 @@
 import { prisma } from "@/infrastructure/database/prisma"
-import type { IPlayerModalitiesRepository } from "../interfaces/player-modalities-repository"
-import type { AddCompleteModalityFlowData } from "../types/player-modalities-types"
+import type { IPlayerModalitiesRepository } from "@interfaces-repo/player-modalities-repository"
+import type { PlayerModalityCreateParams } from "@/shared/app-types/player-modalities-types"
 
 export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesRepository {
-  async addCompletePlayerModalityFlow(data: AddCompleteModalityFlowData) {
-    const { playerId, modalityId, skillsIdsWithCategory, playerModalityStats } = data
-    const isTransactionComplete = await prisma.$transaction(async (tx) => {
-      const playerModality = await tx.playerModality.create({
-        data: { playerId, modalityId }
+  async add(data: PlayerModalityCreateParams) {
+    const playerModality = await prisma.playerModality.create({
+      data
+    })
+    return playerModality
+  }
+
+  async addAsMainModality(data: PlayerModalityCreateParams) {
+    const playerModalityTx = await prisma.$transaction(async (tx) => {
+      const createdPlayerModality = await tx.playerModality.create({
+        data
       })
 
-      const playerModalityMonthStats = await tx.playerModalityMonthStats.create({
+      await tx.player.update({
+        where: { id: data.playerId },
         data: {
-          month: new Date(),
-          playerModalityId: playerModality.id,
-          fundamentalsScore: playerModalityStats.fundamentalsScore,
-          resourcesScore: playerModalityStats.resourcesScore,
-          attackScore: playerModalityStats.attackScore,
-          defenseScore: playerModalityStats.defenseScore,
-          overallScore: playerModalityStats.overallScore,
+          mainModalityId: data.modalityId
         }
       })
 
-      const skillsData = skillsIdsWithCategory.map(skill => ({
-        playerModalityMonthId: playerModalityMonthStats.id,
-        skillId: skill.skillId,
-        category: skill.category
-      }))
-
-      await tx.playerSkillMonthStats.createMany({ data: skillsData })
-
-      return true
+      return createdPlayerModality
     })
-
-    return isTransactionComplete
+    return playerModalityTx
   }
 
-  async hasModalityForPlayer({ playerId, modalityId }: { playerId: string, modalityId: string }) {
+  async hasPlayerModality(params: { playerId: string; modalityId: string }) {
+    const { playerId, modalityId } = params
     const count = await prisma.playerModality.count({
       where: {
-        playerId,
-        modalityId,
-      },
+        playerId: playerId,
+        modalityId: modalityId
+      }
     })
     return Boolean(count)
   }
 
-  async countModalitiesForPlayer(playerId: string) {
+  async countModalitiesByPlayerId(playerId: string) {
     const count = await prisma.playerModality.count({
       where: { playerId }
     })

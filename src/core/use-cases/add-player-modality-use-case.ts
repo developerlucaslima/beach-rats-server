@@ -30,13 +30,13 @@ export class AddPlayerModalityUseCase {
     }
 
     // It should throw BusinessRuleException if the modality is already linked to the player.
-    const alreadyHasModality = await this.playerModalitiesRepo.hasModalityForPlayer({ playerId, modalityId })
+    const alreadyHasModality = await this.playerModalitiesRepo.hasPlayerModality({ playerId, modalityId })
     if (alreadyHasModality) {
       throw new BusinessRuleException('Modality already linked.')
     }
 
     // It should throw BusinessRuleException if the player exceeds the modality limit based on their subscription plan.
-    const totalModalities = await this.playerModalitiesRepo.countModalitiesForPlayer(playerId)
+    const totalModalities = await this.playerModalitiesRepo.countModalitiesByPlayerId(playerId)
     const maxModalities = player.subscriptionPlan === 'free' ? 2 : Infinity
     if (totalModalities >= maxModalities) {
       throw new BusinessRuleException('Modality limit reached.')

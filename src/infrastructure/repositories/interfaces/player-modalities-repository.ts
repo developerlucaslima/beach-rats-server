@@ -1,7 +1,8 @@
-import type { AddCompleteModalityFlowData } from "../types/player-modalities-types";
+import type { PlayerModality, PlayerModalityCreateParams } from "@app-types/player-modalities-types";
 
 export interface IPlayerModalitiesRepository {
-  addCompletePlayerModalityFlow(data: AddCompleteModalityFlowData): Promise<boolean>
-  hasModalityForPlayer(params: { playerId: string; modalityId: string }): Promise<boolean>
-  countModalitiesForPlayer(playerId: string): Promise<number>
+  add(data: PlayerModalityCreateParams): Promise<PlayerModality>
+  addAsMainModality(data: PlayerModalityCreateParams): Promise<PlayerModality>
+  hasPlayerModality(params: { playerId: string; modalityId: string }): Promise<boolean>
+  countModalitiesByPlayerId(playerId: string): Promise<number>
 }
