@@ -1,5 +1,4 @@
 import type { IPlayerModalitiesRepository } from "@/infrastructure/repositories/interfaces/player-modalities-repository"
-import type { IPlayerModalityMonthsRepository } from "@/infrastructure/repositories/interfaces/player-modality-months-repository"
 import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository"
 import type { StatsCalculatorService } from "@/infrastructure/services/stats-calculator-service"
 import type { Category } from "@prisma/client"
