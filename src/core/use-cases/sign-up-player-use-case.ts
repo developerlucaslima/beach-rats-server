@@ -1,9 +1,9 @@
 import type { Player } from "@prisma/client";
 import { hash } from "bcryptjs";
 
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
 
-import { EmailNotAvailableException } from "../errors/email-not-available-exception";
+import { EmailNotAvailableException } from "@errors/email-not-available-exception";
 
 interface SignUpPlayerUseCaseRequest {
   name: string

@@ -1,8 +1,8 @@
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
 import { hash } from "bcryptjs";
 
-import { ResourceNotFoundException } from "../errors/resource-not-found-exception";
-import { PasswordAlreadySetException } from "../errors/password-already-set-exception";
+import { ResourceNotFoundException } from "@errors/resource-not-found-exception";
+import { PasswordAlreadySetException } from "@errors/password-already-set-exception";
 
 interface SetPlayerPasswordUseCaseRequest {
   playerId: string

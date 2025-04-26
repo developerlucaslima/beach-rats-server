@@ -1,8 +1,8 @@
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
+import type { IPlayersRepository } from "@interfaces-repo/players-repository";
 import { compare, hash } from "bcryptjs";
 
-import { ResourceNotFoundException } from "../errors/resource-not-found-exception";
-import { InvalidCredentialsException } from "../errors/invalid-credentials-exception";
+import { ResourceNotFoundException } from "@errors/resource-not-found-exception";
+import { InvalidCredentialsException } from "@errors/invalid-credentials-exception";
 
 interface UpdatePlayerPasswordUseCaseRequest {
   playerId: string

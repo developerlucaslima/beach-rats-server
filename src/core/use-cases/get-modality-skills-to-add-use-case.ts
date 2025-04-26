@@ -1,9 +1,9 @@
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository"
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository"
 import type { Skill } from "@prisma/client"
-import { ResourceNotFoundException } from "../errors/resource-not-found-exception"
-import type { IPlayerModalitiesRepository } from "@/infrastructure/repositories/interfaces/player-modalities-repository"
-import type { ISkillsRepository } from "@/infrastructure/repositories/interfaces/skills-repository"
-import { BusinessRuleException } from "../errors/business-rules-exception"
+import { ResourceNotFoundException } from "@errors/resource-not-found-exception"
+import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
+import type { ISkillsRepository } from "@repositories/interfaces/skills-repository"
+import { BusinessRuleException } from "@errors/business-rules-exception"
 
 interface GetModalitySkillsToAddUseCaseRequest {
   playerId: string

@@ -1,9 +1,9 @@
 import type { Player } from "@prisma/client";
 import { compare } from "bcryptjs";
 
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
+import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
 
-import { InvalidCredentialsException } from "../errors/invalid-credentials-exception";
+import { InvalidCredentialsException } from "@errors/invalid-credentials-exception";
 
 
 interface SignInPlayerUseCaseRequest {

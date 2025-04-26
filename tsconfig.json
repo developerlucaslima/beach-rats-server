@@ -4,8 +4,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@/types/*": ["src/shared/types/*"],
+      "@/errors/*": ["src/shared/errors/*"],
       "@/entities/*": ["./src/core/entities/*"],
-      "@/errors/*": ["./src/core/errors/*"],
       "@/factories/*": ["./src/core/factories/*"],
       "@/use-cases/*": ["./src/core/use-cases/*"],
       "@/database/*": ["./src/infrastructure/database/*"],
