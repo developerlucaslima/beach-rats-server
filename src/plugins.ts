@@ -4,8 +4,8 @@ import fastifyJwt from '@fastify/jwt'
 import type { FastifyInstance } from 'fastify'
 
 import { env } from './env'
-import { globalErrorHandler } from './http/errors/global-error-handler'
-import { playerRoutes } from './http/routes/players-routes'
+import { globalErrorHandler } from '@errors/global-error-handler'
+import { playerRoutes } from '@routes/players-routes'
 
 export function registerPlugins(app: FastifyInstance) {
   app.register(fastifyCors, {

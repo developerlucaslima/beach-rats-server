@@ -1,7 +1,7 @@
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
 import { ZodError } from 'zod'
-import { InvalidCredentialsException } from '@/core/errors/invalid-credentials-exception'
-import { EmailNotAvailableException } from '@/core/errors/email-not-available-exception'
+import { InvalidCredentialsException } from '@errors/invalid-credentials-exception'
+import { EmailNotAvailableException } from '@errors/email-not-available-exception'
 
 export function globalErrorHandler(
   error: FastifyError,
