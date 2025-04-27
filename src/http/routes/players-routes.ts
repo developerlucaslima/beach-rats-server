@@ -3,6 +3,7 @@ import { getPlayerMonthlyStatsController } from '@controllers/get-player-monthly
 import { getPlayerProfileController } from '@controllers/get-player-profile-controller'
 import { setPlayerPasswordController } from '@controllers/set-player-password-controller'
 import { updatePlayerPasswordController } from '@controllers/update-player-password-controller'
+import { updatePlayerProfileController } from '@controllers/update-player-profile-controller'
 import { verifyJwt } from '@middlewares/verify-jwt'
 import { verifyRole } from '@middlewares/verify-role'
 import type { FastifyInstance } from 'fastify'
@@ -46,5 +47,10 @@ export async function playersRoutes(app: FastifyInstance) {
     '/me/update-password',
     { onRequest: [verifyJwt, verifyRole('athlete')] },
     updatePlayerPasswordController,
+  )
+  app.patch(
+    '/me/update-profile',
+    { onRequest: [verifyJwt, verifyRole('athlete')] },
+    updatePlayerProfileController,
   )
 }
