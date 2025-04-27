@@ -48,7 +48,7 @@ export async function refreshTokenController(
   })
 
   return reply.status(200).send({
-    message: 'Token refreshed.',
+    message: 'Token refreshed successfully.',
     token: newAccessToken,
   })
 }

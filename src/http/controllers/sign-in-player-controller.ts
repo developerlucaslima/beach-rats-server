@@ -52,8 +52,8 @@ export async function signInPlayerController(
   })
 
   return reply.status(200).send({
-    message: 'Sign in successfully.',
+    message: 'Player signed in successfully.',
     token,
-    player: mapAuthenticatedPlayerResponse(player),
+    data: mapAuthenticatedPlayerResponse(player),
   })
 }

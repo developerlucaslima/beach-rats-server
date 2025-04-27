@@ -13,8 +13,8 @@ export async function getPlayerProfileController(
     playerId,
   })
 
-  return reply.status(201).send({
+  return reply.status(200).send({
     message: 'Player profile retrieved successfully.',
-    player: mapAuthenticatedPlayerResponse(player),
+    data: mapAuthenticatedPlayerResponse(player),
   })
 }

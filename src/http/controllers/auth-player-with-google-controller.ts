@@ -64,9 +64,9 @@ export async function authPlayerWithGoogleController(
     maxAge: REFRESH_TOKEN_EXPIRATION_SECONDS,
   })
 
-  return reply.status(201).send({
-    message: 'Auth with google successfully.',
+  return reply.status(200).send({
+    message: 'Authenticated with Google successfully.',
     token,
-    player: mapAuthenticatedPlayerResponse(player),
+    data: mapAuthenticatedPlayerResponse(player),
   })
 }
