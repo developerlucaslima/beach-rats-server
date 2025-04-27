@@ -1,4 +1,6 @@
 import { addPlayerModalityController } from '@controllers/add-player-modality-controller'
+import { getPlayerMonthlyStatsController } from '@controllers/get-player-monthly-stats'
+import { getPlayerProfileController } from '@controllers/get-player-profile'
 import { verifyJwt } from '@middlewares/verify-jwt'
 import { verifyRole } from '@middlewares/verify-role'
 import type { FastifyInstance } from 'fastify'
@@ -18,6 +20,11 @@ export async function playerRoutes(app: FastifyInstance) {
   app.patch('/refresh-token', refreshTokenController)
 
   /** Authenticated */
+  app.get(
+    '/me',
+    { onRequest: [verifyJwt, verifyRole('athlete')] },
+    getPlayerProfileController,
+  )
   app.post(
     '/me/modalities',
     { onRequest: [verifyJwt, verifyRole('athlete')] },
@@ -26,6 +33,6 @@ export async function playerRoutes(app: FastifyInstance) {
   app.get(
     '/me/monthly-stats',
     { onRequest: [verifyJwt, verifyRole('athlete')] },
-    addPlayerModalityController,
+    getPlayerMonthlyStatsController,
   )
 }
