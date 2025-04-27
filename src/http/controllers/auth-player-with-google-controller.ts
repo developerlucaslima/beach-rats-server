@@ -4,8 +4,9 @@ import { z } from "zod"
 import { ACCESS_TOKEN_EXPIRATION_SECONDS, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRATION_SECONDS } from "../jwt/jwt-config"
 import { mapAuthenticatedPlayerResponse } from "../dto/player-dto"
 import { setTokenCookie } from "../jwt/set-refresh-token-cookie"
-import { makeAuthPlayerWithGoogle } from "@/core/factories/make-auth-player-with-google"
-import { GoogleAuthService } from "@/infrastructure/services/google-auth-service"
+import { makeAuthPlayerWithGoogle } from "@factories/make-auth-player-with-google"
+import { GoogleAuthService } from "@services/google-auth-service"
+import { BusinessRuleException } from "@errors/business-rules-exception"
 
 const authPlayerWithGoogleSchema = z.object({
   idToken: z.string().min(10),
@@ -28,7 +29,7 @@ export async function authPlayerWithGoogleController(
 
   /* Optional: reject unverified emails */
   if (!emailVerified) {
-    return reply.status(401).send({ message: "Google email not verified." })
+    throw new BusinessRuleException('Google email not verified.')
   }
 
   const authPlayerWithGoogleUseCase = makeAuthPlayerWithGoogle()
