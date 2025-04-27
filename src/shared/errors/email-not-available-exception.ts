@@ -1,6 +1,8 @@
+import { BaseException } from './base-exception'
+
 const CONFLICT_ERROR_CODE = 409
 
-export class EmailNotAvailableException extends Error {
+export class EmailNotAvailableException extends BaseException {
   public readonly code: number
 
   constructor() {
