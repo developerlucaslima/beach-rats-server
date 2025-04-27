@@ -1,11 +1,12 @@
-import { globalErrorHandler } from '@errors/global-error-handler'
 import fastifyCookie from '@fastify/cookie'
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import { playerRoutes } from '@routes/players-routes'
 import type { FastifyInstance } from 'fastify'
 
-import { env } from './env'
+import { globalErrorHandler } from '@/infrastructure/http/global-error-handler'
+
+import { env } from '../../env'
 
 export function registerPlugins(app: FastifyInstance) {
   app.register(fastifyCors, {
@@ -23,5 +24,5 @@ export function registerPlugins(app: FastifyInstance) {
 
   app.register(fastifyCookie)
   app.setErrorHandler(globalErrorHandler)
-  app.register(playerRoutes)
+  app.register(playerRoutes, { prefix: '/players' })
 }
