@@ -1,5 +1,3 @@
-import type { IPlayersRepository } from "@repositories/interfaces/players-repository"
-import { ResourceNotFoundException } from "@errors/resource-not-found-exception"
 import type { ISkillsRepository } from "@repositories/interfaces/skills-repository"
 import type { Skill } from "@app-types/skills-types"
 
@@ -13,7 +11,6 @@ interface GetSkillsByModalityUseCaseResponse {
 
 export class GetSkillsByModalityUseCase {
   constructor(
-    private readonly playersRepo: IPlayersRepository,
     private readonly skillsRepo: ISkillsRepository,
   ) { }
 
