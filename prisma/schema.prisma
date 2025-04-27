@@ -192,6 +192,7 @@ model PlayerModality {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([playerId, modalityId])
   @@index([playerId])
   @@map("player_modalities")
 }
