@@ -1,4 +1,3 @@
-import { InvalidCredentialsException } from '@/core/errors/invalid-credentials-exception'
 import { makeSignInPlayer } from '@/core/factories/make-sign-in-player'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
