@@ -1,6 +1,7 @@
 import { prisma } from "@/infrastructure/database/prisma"
 import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
 import type { PlayerModalityCreateParams } from "@/shared/app-types/player-modalities-types"
+import { count } from "console"
 
 export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesRepository {
   async add(data: PlayerModalityCreateParams) {
@@ -26,6 +27,19 @@ export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesReposi
       return createdPlayerModality
     })
     return playerModalityTx
+  }
+
+  async findByPlayerIdAndModalityId(params: { playerId: string; modalityId: string }) {
+    const { playerId, modalityId } = params
+    const playerModality = await prisma.playerModality.findUnique({
+      where: {
+        playerId_modalityId: {
+          playerId,
+          modalityId
+        }
+      }
+    })
+    return playerModality
   }
 
   async hasPlayerModality(params: { playerId: string; modalityId: string }) {
