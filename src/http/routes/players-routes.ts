@@ -1,3 +1,6 @@
+import { addPlayerModalityController } from '@controllers/add-player-modality-controller'
+import { verifyJwt } from '@middlewares/verify-jwt'
+import { verifyRole } from '@middlewares/verify-role'
 import type { FastifyInstance } from 'fastify'
 
 import { authPlayerWithGoogleController } from '../controllers/auth-player-with-google-controller'
@@ -6,13 +9,18 @@ import { signInPlayerController } from '../controllers/sign-in-player-controller
 import { signUpPlayerController } from '../controllers/sign-up-player-controller'
 
 export async function playerRoutes(app: FastifyInstance) {
-  app.post('/sign-up-player', signUpPlayerController)
-  app.post('/sign-in-player', signInPlayerController)
-  app.post('/auth-player-google', authPlayerWithGoogleController)
+  /** Authenticate */
+  app.post('/sign-up', signUpPlayerController)
+  app.post('/sign-in', signInPlayerController)
+  app.post('/auth/google', authPlayerWithGoogleController)
 
   /** Token Refresh */
-  app.patch('/refresh-token-player', refreshTokenController)
+  app.patch('/refresh-token', refreshTokenController)
 
   /** Authenticated */
-  // app.get('/me', { onRequest: [verifyJwt, verifyPlayerRole('PLAYER')] }, playerProfileController)
+  app.post(
+    '/me/modalities',
+    { onRequest: [verifyJwt, verifyRole('athlete')] },
+    addPlayerModalityController,
+  )
 }
