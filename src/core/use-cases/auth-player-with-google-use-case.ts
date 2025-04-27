@@ -1,7 +1,6 @@
-import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
-
-import { EmailNotAvailableException } from "@errors/email-not-available-exception";
-import type { Player } from "@app-types/players-types";
+import type { Player } from '@app-types/players-types'
+import { EmailNotAvailableException } from '@errors/email-not-available-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
 
 interface AuthPlayerWithGoogleUseCaseRequest {
   name: string
@@ -15,7 +14,7 @@ interface AuthPlayerWithGoogleUseCaseResponse {
 }
 
 export class AuthPlayerWithGoogleUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     name,
@@ -54,6 +53,7 @@ export class AuthPlayerWithGoogleUseCase {
     })
 
     // It should return player without passwordHash.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...safePlayer } = createdPlayer
     return {
       player: safePlayer,

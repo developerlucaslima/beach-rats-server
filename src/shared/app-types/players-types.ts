@@ -1,5 +1,5 @@
-type Role = "athlete" | "administrator"
-type SubscriptionPlan = "pro" | "free" | "premium"
+export type Role = 'athlete' | 'administrator'
+export type SubscriptionPlan = 'pro' | 'free' | 'premium'
 
 export interface PlayerCreateParams {
   id?: string

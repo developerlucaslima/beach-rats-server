@@ -1,16 +1,16 @@
-export type Category = "none" | "beginner" | "intermediate" | "advanced" | "pro"
+export type Category = 'none' | 'beginner' | 'intermediate' | 'advanced' | 'pro'
 
 export interface SkillIdWithCategory {
-  skillId: string;
+  skillId: string
   category: Category
 }
 
 export interface PlayerModalityStats {
-  fundamentalsScore: number;
-  resourcesScore: number;
-  attackScore: number;
-  defenseScore: number;
-  overallScore: number;
+  fundamentalsScore: number
+  resourcesScore: number
+  attackScore: number
+  defenseScore: number
+  overallScore: number
 }
 
 export interface AddCompleteModalityFlowData {
@@ -21,14 +21,14 @@ export interface AddCompleteModalityFlowData {
 }
 
 export interface PlayerModalityMonthStats {
-  id: string;
-  playerModalityId: string;
-  month: Date;
-  fundamentalsScore: number;
-  resourcesScore: number;
-  attackScore: number;
-  defenseScore: number;
-  overallScore: number;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  playerModalityId: string
+  month: Date
+  fundamentalsScore: number
+  resourcesScore: number
+  attackScore: number
+  defenseScore: number
+  overallScore: number
+  createdAt: Date
+  updatedAt: Date
 }

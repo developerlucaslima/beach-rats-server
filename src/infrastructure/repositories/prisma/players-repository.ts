@@ -1,7 +1,10 @@
-import { prisma } from '@/infrastructure/database/prisma'
-
+import type {
+  PlayerCreateParams,
+  PlayerUpdateParams,
+} from '@app-types/players-types'
 import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
-import type { PlayerCreateParams, PlayerUpdateParams } from '@app-types/players-types'
+
+import { prisma } from '@/infrastructure/database/prisma'
 
 export class PrismaPlayersRepository implements IPlayersRepository {
   async create(data: PlayerCreateParams) {
@@ -26,12 +29,16 @@ export class PrismaPlayersRepository implements IPlayersRepository {
       where: { id: playerId },
       data: {
         passwordHash,
-      }
+      },
     })
     return true
   }
 
-  async attachGoogleAccount(params: { playerId: string; googleId: string; avatarUrl?: string }) {
+  async attachGoogleAccount(params: {
+    playerId: string
+    googleId: string
+    avatarUrl?: string
+  }) {
     const { playerId, googleId, avatarUrl } = params
     const player = prisma.player.update({
       where: { id: playerId },
@@ -49,7 +56,7 @@ export class PrismaPlayersRepository implements IPlayersRepository {
       where: { id: playerId },
       data: {
         mainModalityId: modalityId,
-      }
+      },
     })
     return true
   }
@@ -75,8 +82,8 @@ export class PrismaPlayersRepository implements IPlayersRepository {
   async findByGoogleId(googleId: string) {
     const player = await prisma.player.findUnique({
       where: {
-        googleId
-      }
+        googleId,
+      },
     })
     return player
   }

@@ -1,10 +1,11 @@
-import { prisma } from "@/infrastructure/database/prisma"
-import type { ISkillsRepository } from "@repositories/interfaces/skills-repository"
+import type { ISkillsRepository } from '@repositories/interfaces/skills-repository'
+
+import { prisma } from '@/infrastructure/database/prisma'
 
 export class PrismaSkillsRepository implements ISkillsRepository {
   async findById(skillId: string) {
     const skill = await prisma.skill.findUnique({
-      where: { id: skillId }
+      where: { id: skillId },
     })
     return skill
   }
@@ -13,15 +14,15 @@ export class PrismaSkillsRepository implements ISkillsRepository {
     if (skillsIds.length === 0) return null
     const skills = await prisma.skill.findMany({
       where: {
-        id: { in: skillsIds }
+        id: { in: skillsIds },
       },
       include: {
         skillTypes: {
           include: {
-            skillType: true
-          }
-        }
-      }
+            skillType: true,
+          },
+        },
+      },
     })
     return skills
   }
@@ -29,20 +30,19 @@ export class PrismaSkillsRepository implements ISkillsRepository {
   async findManyByModalityId(modalityId: string) {
     const skills = prisma.skill.findMany({
       where: {
-        skillModalities:
-        {
+        skillModalities: {
           some: {
-            modalityId: modalityId
-          }
-        }
+            modalityId,
+          },
+        },
       },
       include: {
         skillTypes: {
           include: {
-            skillType: true
-          }
-        }
-      }
+            skillType: true,
+          },
+        },
+      },
     })
     return skills
   }

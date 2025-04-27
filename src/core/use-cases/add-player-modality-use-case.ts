@@ -1,8 +1,8 @@
-import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
-import type { IPlayersRepository } from "@repositories/interfaces/players-repository"
-import { ResourceNotFoundException } from "@errors/resource-not-found-exception"
-import { BusinessRuleException } from "@errors/business-rules-exception"
-import type { PlayerModality } from "@app-types/player-modalities-types"
+import type { PlayerModality } from '@app-types/player-modalities-types'
+import { BusinessRuleException } from '@errors/business-rules-exception'
+import { ResourceNotFoundException } from '@errors/resource-not-found-exception'
+import type { IPlayerModalitiesRepository } from '@repositories/interfaces/player-modalities-repository'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
 
 interface AddPlayerModalityUseCaseRequest {
   playerId: string
@@ -17,7 +17,7 @@ export class AddPlayerModalityUseCase {
   constructor(
     private readonly playersRepo: IPlayersRepository,
     private readonly playerModalitiesRepo: IPlayerModalitiesRepository,
-  ) { }
+  ) {}
 
   async execute({
     playerId,
@@ -30,13 +30,18 @@ export class AddPlayerModalityUseCase {
     }
 
     // It should throw BusinessRuleException if the modality is already linked to the player.
-    const alreadyHasModality = await this.playerModalitiesRepo.hasPlayerModality({ playerId, modalityId })
+    const alreadyHasModality =
+      await this.playerModalitiesRepo.hasPlayerModality({
+        playerId,
+        modalityId,
+      })
     if (alreadyHasModality) {
       throw new BusinessRuleException('Modality already linked.')
     }
 
     // It should throw BusinessRuleException if the player exceeds the modality limit based on their subscription plan.
-    const totalModalities = await this.playerModalitiesRepo.countModalitiesByPlayerId(playerId)
+    const totalModalities =
+      await this.playerModalitiesRepo.countModalitiesByPlayerId(playerId)
     const maxModalities = player.subscriptionPlan === 'free' ? 2 : Infinity
     if (totalModalities >= maxModalities) {
       throw new BusinessRuleException('Modality limit reached.')
@@ -45,9 +50,12 @@ export class AddPlayerModalityUseCase {
     // It should set the modality as main when adding the first modality.
     const isFirstModality = totalModalities === 0
     const playerModality = isFirstModality
-      ? await this.playerModalitiesRepo.addAsMainModality({ modalityId, playerId })
-      // It should not set as main when the player already has at least one modality.
-      : await this.playerModalitiesRepo.add({ modalityId, playerId })
+      ? await this.playerModalitiesRepo.addAsMainModality({
+          modalityId,
+          playerId,
+        })
+      : // It should not set as main when the player already has at least one modality.
+        await this.playerModalitiesRepo.add({ modalityId, playerId })
 
     // It should return the created playerModality when the modality is successfully added.
     return { playerModality }

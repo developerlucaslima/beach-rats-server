@@ -1,7 +1,7 @@
 import Fastify from 'fastify'
 
-import { env } from "./env"
-import { registerPlugins } from "./plugins"
+import { env } from './env'
+import { registerPlugins } from './plugins'
 
 export function buildApp() {
   const app = Fastify({ logger: true })

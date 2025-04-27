@@ -1,4 +1,8 @@
-import type { Category, SkillIdWithCategory, PlayerModalityStats } from '@app-types/player-modality-months-stats-types'
+import type {
+  Category,
+  PlayerModalityStats,
+  SkillIdWithCategory,
+} from '@app-types/player-modality-months-stats-types'
 import type { SkillWithTypes } from '@app-types/skills-types'
 
 export interface StatsCalculatorRequest {
@@ -11,16 +15,26 @@ export interface StatsCalculatorResponse {
 }
 
 const CATEGORY_SCORE: Record<Category, number> = {
-  none: 0, beginner: 25, intermediate: 50, advanced: 75, pro: 100,
+  none: 0,
+  beginner: 25,
+  intermediate: 50,
+  advanced: 75,
+  pro: 100,
 }
 
 const WEIGHT = {
-  fundamental: 0.9, resource: 0.1
+  fundamental: 0.9,
+  resource: 0.1,
 }
 
 export class StatsCalculatorService {
-  async calculate({ skillsByModality, skillsIdsWithCategory }: StatsCalculatorRequest): Promise<StatsCalculatorResponse> {
-    const skillsIdsWithCategoryMap = new Map(skillsIdsWithCategory.map(s => [s.skillId, s.category]))
+  async calculate({
+    skillsByModality,
+    skillsIdsWithCategory,
+  }: StatsCalculatorRequest): Promise<StatsCalculatorResponse> {
+    const skillsIdsWithCategoryMap = new Map(
+      skillsIdsWithCategory.map((s) => [s.skillId, s.category]),
+    )
 
     const bucket = () => ({ sum: 0, cnt: 0 })
     const stats = {
@@ -39,10 +53,13 @@ export class StatsCalculatorService {
     }
 
     for (const skill of skillsByModality) {
-      const score = CATEGORY_SCORE[skillsIdsWithCategoryMap.get(skill.id) ?? 'none']
+      const score =
+        CATEGORY_SCORE[skillsIdsWithCategoryMap.get(skill.id) ?? 'none']
 
-      const attack = skill.skillTypes.some(r => r.skillType.type === 'attack')
-      const defense = skill.skillTypes.some(r => r.skillType.type === 'defense')
+      const attack = skill.skillTypes.some((r) => r.skillType.type === 'attack')
+      const defense = skill.skillTypes.some(
+        (r) => r.skillType.type === 'defense',
+      )
 
       if (skill.skillGroup === 'fundamental') {
         registerScore('fundamentalBucket', score)
@@ -63,10 +80,23 @@ export class StatsCalculatorService {
     const fundamentalsScore = calculateAverage('fundamentalBucket')
     const resourcesScore = calculateAverage('resourceBucket')
 
-    const attackScore = WEIGHT.fundamental * calculateAverage('attackFundamentalBucket') + WEIGHT.resource * calculateAverage('attackResourceBucket')
-    const defenseScore = WEIGHT.fundamental * calculateAverage('defenseFundamentalBucket') + WEIGHT.resource * calculateAverage('defenseResourceBucket')
-    const overallScore = WEIGHT.fundamental * fundamentalsScore + WEIGHT.resource * resourcesScore
+    const attackScore =
+      WEIGHT.fundamental * calculateAverage('attackFundamentalBucket') +
+      WEIGHT.resource * calculateAverage('attackResourceBucket')
+    const defenseScore =
+      WEIGHT.fundamental * calculateAverage('defenseFundamentalBucket') +
+      WEIGHT.resource * calculateAverage('defenseResourceBucket')
+    const overallScore =
+      WEIGHT.fundamental * fundamentalsScore + WEIGHT.resource * resourcesScore
 
-    return { playerModalityStats: { attackScore, defenseScore, resourcesScore, fundamentalsScore, overallScore } }
+    return {
+      playerModalityStats: {
+        attackScore,
+        defenseScore,
+        resourcesScore,
+        fundamentalsScore,
+        overallScore,
+      },
+    }
   }
 }

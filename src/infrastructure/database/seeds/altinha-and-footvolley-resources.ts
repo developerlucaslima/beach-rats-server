@@ -1,7 +1,7 @@
 import { type Prisma } from '@prisma/client'
 
-import { modalities } from './modalities';
-import { skillTypes } from './skill-types';
+import { modalities } from './modalities'
+import { skillTypes } from './skill-types'
 
 export const altinhaAndFootvolleyResources = [
   {
@@ -20,7 +20,8 @@ export const altinhaAndFootvolleyResources = [
   },
   {
     name: 'Bicicleta',
-    description: 'Ataque aéreo acrobático com a parte superior do pé simulando o ato de pedalar no ar.',
+    description:
+      'Ataque aéreo acrobático com a parte superior do pé simulando o ato de pedalar no ar.',
     skillGroup: 'resource',
     skillModalities: modalities(['footvolley', 'altinha']),
     skillTypes: skillTypes(['attack']),
@@ -55,14 +56,16 @@ export const altinhaAndFootvolleyResources = [
   },
   {
     name: 'Saque com Efeito',
-    description: 'Saque com técnicas que conferem dificuldade na recepção adversaria.',
+    description:
+      'Saque com técnicas que conferem dificuldade na recepção adversaria.',
     skillGroup: 'resource',
     skillModalities: modalities(['footvolley']),
     skillTypes: skillTypes(['attack']),
   },
   {
     name: 'Pingo com Finta',
-    description: 'Ataque imprevisível, próximo a rede tirando velocidade da bola e deixando-a cair próxima a rede.',
+    description:
+      'Ataque imprevisível, próximo a rede tirando velocidade da bola e deixando-a cair próxima a rede.',
     skillGroup: 'resource',
     skillModalities: modalities(['footvolley']),
     skillTypes: skillTypes(['attack']),
@@ -153,18 +156,21 @@ export const altinhaAndFootvolleyResources = [
   },
   {
     name: 'Dois Tempos',
-    description: 'Recepção seguida de ataque em apenas dois movimentos rápidos.',
+    description:
+      'Recepção seguida de ataque em apenas dois movimentos rápidos.',
     skillGroup: 'resource',
     skillModalities: modalities(['altinha']),
     skillTypes: skillTypes(['attack', 'defense']),
   },
   {
     name: 'Eclipse',
-    description: 'Recepção aérea dominando e controlando totalmente a bola com a parte interna do pé enquanto passa o outro pé pela frente, criando um efeito de "eclipse".',
+    description:
+      'Recepção aérea dominando e controlando totalmente a bola com a parte interna do pé enquanto passa o outro pé pela frente, criando um efeito de "eclipse".',
     skillGroup: 'resource',
     skillModalities: modalities(['altinha']),
     skillTypes: skillTypes(['defense']),
   },
 ] as const satisfies readonly Prisma.SkillCreateInput[]
 
-export type ValidAltinhaAndFootvolleyResourceName = typeof altinhaAndFootvolleyResources[number]['name'];
+export type ValidAltinhaAndFootvolleyResourceName =
+  (typeof altinhaAndFootvolleyResources)[number]['name']

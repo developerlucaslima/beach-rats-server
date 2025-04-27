@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from '@prisma/client'
 
 export const skillTypesSeed = [
   {
@@ -11,7 +11,7 @@ export const skillTypesSeed = [
   },
 ] as const satisfies readonly Prisma.SkillTypeCreateInput[]
 
-export type ValidSkillType = typeof skillTypesSeed[number]['type']
+export type ValidSkillType = (typeof skillTypesSeed)[number]['type']
 
 export const skillTypes = (types: ValidSkillType[]) => ({
   create: types.map((t) => ({

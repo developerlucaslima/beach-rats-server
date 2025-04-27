@@ -1,7 +1,7 @@
 import { type Prisma } from '@prisma/client'
 
-import { modalities } from './modalities';
-import { skillTypes } from './skill-types';
+import { modalities } from './modalities'
+import { skillTypes } from './skill-types'
 
 export const altinhaAndFootvolleyFundamentals = [
   {
@@ -56,10 +56,12 @@ export const altinhaAndFootvolleyFundamentals = [
   {
     name: 'Pingo',
     skillGroup: 'fundamental',
-    description: 'Ataque de cabeça, próximo a rede tirando velocidade da bola e deixando-a cair próxima a rede.',
+    description:
+      'Ataque de cabeça, próximo a rede tirando velocidade da bola e deixando-a cair próxima a rede.',
     skillModalities: modalities(['footvolley']),
     skillTypes: skillTypes(['attack']),
   },
 ] as const satisfies readonly Prisma.SkillCreateInput[]
 
-export type ValidAltinhaAndFootvolleyFundamentalName = typeof altinhaAndFootvolleyFundamentals[number]['name'];
+export type ValidAltinhaAndFootvolleyFundamentalName =
+  (typeof altinhaAndFootvolleyFundamentals)[number]['name']

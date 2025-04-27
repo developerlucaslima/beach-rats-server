@@ -1,9 +1,7 @@
-import { hash } from "bcryptjs";
-
-import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
-
-import { EmailNotAvailableException } from "@errors/email-not-available-exception";
-import type { Player } from "@app-types/players-types";
+import type { Player } from '@app-types/players-types'
+import { EmailNotAvailableException } from '@errors/email-not-available-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
+import { hash } from 'bcryptjs'
 
 interface SignUpPlayerUseCaseRequest {
   name: string
@@ -16,7 +14,7 @@ interface SignUpPlayerUseCaseResponse {
 }
 
 export class SignUpPlayerUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     name,
@@ -40,6 +38,7 @@ export class SignUpPlayerUseCase {
     })
 
     // It should return the created player without the passwordHash.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...safePlayer } = createdPlayer
     return {
       player: safePlayer,

@@ -1,7 +1,6 @@
-import type { IPlayersRepository } from "@repositories/interfaces/players-repository";
-
-import { ResourceNotFoundException } from "@errors/resource-not-found-exception";
-import type { Player } from "@app-types/players-types";
+import type { Player } from '@app-types/players-types'
+import { ResourceNotFoundException } from '@errors/resource-not-found-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
 
 interface GetPlayerProfileUseCaseRequest {
   playerId: string
@@ -12,7 +11,7 @@ interface GetPlayerProfileUseCaseResponse {
 }
 
 export class GetPlayerProfileUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     playerId,
@@ -26,6 +25,7 @@ export class GetPlayerProfileUseCase {
     }
 
     // It should return player without passwordHash.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...safePlayer } = byId
     return {
       player: safePlayer,
