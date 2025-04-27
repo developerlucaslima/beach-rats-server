@@ -1,6 +1,6 @@
 import { addPlayerModalityController } from '@controllers/add-player-modality-controller'
-import { getPlayerMonthlyStatsController } from '@controllers/get-player-monthly-stats'
-import { getPlayerProfileController } from '@controllers/get-player-profile'
+import { getPlayerMonthlyStatsController } from '@controllers/get-player-monthly-stats-controller'
+import { getPlayerProfileController } from '@controllers/get-player-profile-controller'
 import { verifyJwt } from '@middlewares/verify-jwt'
 import { verifyRole } from '@middlewares/verify-role'
 import type { FastifyInstance } from 'fastify'
