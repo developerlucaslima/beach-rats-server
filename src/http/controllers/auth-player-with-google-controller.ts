@@ -1,12 +1,12 @@
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { z } from "zod"
 
-import { ACCESS_TOKEN_EXPIRATION_SECONDS, REFRESH_TOKEN_COOKIE_NAME, REFRESH_TOKEN_EXPIRATION_SECONDS } from "../jwt/jwt-config"
-import { mapAuthenticatedPlayerResponse } from "../dto/player-dto"
-import { setTokenCookie } from "../jwt/set-refresh-token-cookie"
+import { BusinessRuleException } from "@errors/business-rules-exception"
 import { makeAuthPlayerWithGoogle } from "@factories/make-auth-player-with-google"
 import { GoogleAuthService } from "@services/google-auth-service"
-import { BusinessRuleException } from "@errors/business-rules-exception"
+import { mapAuthenticatedPlayerResponse } from "@dto/player-dto"
+import { ACCESS_TOKEN_EXPIRATION_SECONDS, REFRESH_TOKEN_EXPIRATION_SECONDS, REFRESH_TOKEN_COOKIE_NAME } from "@jwt/jwt-config"
+import { setTokenCookie } from "@jwt/set-refresh-token-cookie"
 
 const authPlayerWithGoogleSchema = z.object({
   idToken: z.string().min(10),
