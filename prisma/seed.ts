@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client/extension"
+import { PrismaClient } from '@prisma/client/extension'
 
-import { altinhaAndFootvolleyFundamentals } from "../src/infrastructure/database/seeds/altinha-and-footvolley-fundamentals"
-import { altinhaAndFootvolleyResources } from "../src/infrastructure/database/seeds/altinha-and-footvolley-resources"
-import { countries } from "../src/infrastructure/database/seeds/countries"
-import { modalitiesSeed } from "../src/infrastructure/database/seeds/modalities"
-import { skillTypesSeed } from "../src/infrastructure/database/seeds/skill-types"
+import { altinhaAndFootvolleyFundamentals } from '../src/infrastructure/database/seeds/altinha-and-footvolley-fundamentals'
+import { altinhaAndFootvolleyResources } from '../src/infrastructure/database/seeds/altinha-and-footvolley-resources'
+import { countries } from '../src/infrastructure/database/seeds/countries'
+import { modalitiesSeed } from '../src/infrastructure/database/seeds/modalities'
+import { skillTypesSeed } from '../src/infrastructure/database/seeds/skill-types'
 
 const prisma = new PrismaClient()
 
@@ -18,7 +18,7 @@ async function main() {
 
   for (const modality of modalitiesSeed) {
     await prisma.modality.upsert({
-      where: { modalityId: modality.modalityId },
+      where: { name: modality.name },
       update: {},
       create: modality,
     })
@@ -26,7 +26,7 @@ async function main() {
 
   for (const skillType of skillTypesSeed) {
     await prisma.skillType.upsert({
-      where: { skillTypeId: skillType.skillTypeId },
+      where: { type: skillType.type },
       update: {},
       create: skillType,
     })
