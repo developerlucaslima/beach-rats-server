@@ -3,7 +3,6 @@
     "rootDirs": ["src"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
       "@errors/*": ["src/shared/errors/*"],
       "@app-types/*": ["src/shared/app-types/*"],
       "@entities/*": ["./src/core/entities/*"],
@@ -14,7 +13,8 @@
       "@services/*": ["./src/infrastructure/services/*"],
       "@controllers/*": ["./src/http/controllers/*"],
       "@middlewares/*": ["./src/http/middlewares/*"],
-      "@routes/*": ["./src/http/routes/*"]
+      "@routes/*": ["./src/http/routes/*"],
+      "@/*": ["./src/*"],
     },
     "outDir": "dist",
     "lib": ["ES2024"],
