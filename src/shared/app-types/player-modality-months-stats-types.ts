@@ -1,21 +1,34 @@
-import type { Category } from "@prisma/client";
+export type Category = "none" | "beginner" | "intermediate" | "advanced" | "pro"
 
 export interface SkillIdWithCategory {
   skillId: string;
   category: Category
 }
 
-export interface PlayerModalityMonthStats {
-  attackScore: number
-  defenseScore: number
-  fundamentalsScore: number
-  resourcesScore: number
-  overallScore: number
+export interface PlayerModalityStats {
+  fundamentalsScore: number;
+  resourcesScore: number;
+  attackScore: number;
+  defenseScore: number;
+  overallScore: number;
 }
 
 export interface AddCompleteModalityFlowData {
-  playerId: string
-  modalityId: string
+  month: Date
+  playerModalityId: string
   skillsIdsWithCategory: SkillIdWithCategory[]
-  playerModalityStats: PlayerModalityMonthStats
+  playerModalityStats: PlayerModalityStats
+}
+
+export interface PlayerModalityMonthStats {
+  id: string;
+  playerModalityId: string;
+  month: Date;
+  fundamentalsScore: number;
+  resourcesScore: number;
+  attackScore: number;
+  defenseScore: number;
+  overallScore: number;
+  createdAt: Date;
+  updatedAt: Date;
 }

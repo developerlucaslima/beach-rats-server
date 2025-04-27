@@ -1,10 +1,8 @@
-import type { Category } from '@prisma/client'
-import type { ISkillsRepository } from '../repositories/interfaces/skills-repository'
-import type { PlayerModalityStats, SkillIdWithCategory } from '../repositories/types/player-modalities-types'
-import type { SkillWithSkillTypes } from '../repositories/types/skills-types'
+import type { Category, SkillIdWithCategory, PlayerModalityStats } from '@app-types/player-modality-months-stats-types'
+import type { SkillWithTypes } from '@app-types/skills-types'
 
 export interface StatsCalculatorRequest {
-  skillsByModality: SkillWithSkillTypes[]
+  skillsByModality: SkillWithTypes[]
   skillsIdsWithCategory: SkillIdWithCategory[]
 }
 
