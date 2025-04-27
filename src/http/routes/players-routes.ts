@@ -23,4 +23,9 @@ export async function playerRoutes(app: FastifyInstance) {
     { onRequest: [verifyJwt, verifyRole('athlete')] },
     addPlayerModalityController,
   )
+  app.get(
+    '/me/monthly-stats',
+    { onRequest: [verifyJwt, verifyRole('athlete')] },
+    addPlayerModalityController,
+  )
 }
