@@ -1,7 +1,6 @@
 import { prisma } from "@/infrastructure/database/prisma"
 import type { IPlayerModalitiesRepository } from "@repositories/interfaces/player-modalities-repository"
 import type { PlayerModalityCreateParams } from "@/shared/app-types/player-modalities-types"
-import { count } from "console"
 
 export class PrismaPlayerModalitiesRepository implements IPlayerModalitiesRepository {
   async add(data: PlayerModalityCreateParams) {
