@@ -3,17 +3,23 @@
     "rootDirs": ["src"],
     "baseUrl": ".",
     "paths": {
-      "@errors/*": ["src/shared/errors/*"],
-      "@app-types/*": ["src/shared/app-types/*"],
-      "@entities/*": ["./src/core/entities/*"],
+      // core
       "@factories/*": ["./src/core/factories/*"],
       "@use-cases/*": ["./src/core/use-cases/*"],
+      // http
+      "@controllers/*": ["./src/http/controllers/*"],
+      "@dto/*": ["./src/http/dto/*"],
+      "@jwt/*": ["./src/http/jwt/*"],
+      "@middlewares/*": ["./src/http/middlewares/*"],
+      "@routes/*": ["./src/http/routes/*"],
+      // infrastructure
       "@database/*": ["./src/infrastructure/database/*"],
       "@repositories/*": ["./src/infrastructure/repositories/*"],
       "@services/*": ["./src/infrastructure/services/*"],
-      "@controllers/*": ["./src/http/controllers/*"],
-      "@middlewares/*": ["./src/http/middlewares/*"],
-      "@routes/*": ["./src/http/routes/*"],
+      // shared
+      "@errors/*": ["src/shared/errors/*"],
+      "@app-types/*": ["src/shared/app-types/*"],
+      // src
       "@/*": ["./src/*"],
     },
     "outDir": "dist",
