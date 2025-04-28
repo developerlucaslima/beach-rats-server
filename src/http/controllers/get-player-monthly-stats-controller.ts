@@ -6,7 +6,7 @@ import { formattedMonth } from '@/shared/utils/formatted-month'
 
 const getPlayerMonthlyStatsSchema = z.object({
   playerModalityId: z.string(),
-  month: z.date(),
+  month: z.coerce.date(),
 })
 
 export async function getPlayerMonthlyStatsController(
