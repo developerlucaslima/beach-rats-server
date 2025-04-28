@@ -4,7 +4,7 @@ import { PrismaSkillsRepository } from '@repositories/prisma/skills-repository'
 import { StatsCalculatorService } from '@services/stats-calculator-service'
 import { UpsertPlayerMonthlyStatsUseCase } from '@use-cases/upsert-player-monthly-stats-use-case'
 
-export function makeUpsertPlayerMonthStats() {
+export function makeUpsertPlayerMonthlyStats() {
   const prismaPlayerModalitiesRepository =
     new PrismaPlayerModalitiesRepository()
   const prismaPlayerModalityMonthsStatsRepository =
