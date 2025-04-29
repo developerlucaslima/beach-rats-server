@@ -61,6 +61,20 @@ export const altinhaAndFootvolleyFundamentals = [
     skillModalities: modalities(['footvolley']),
     skillTypes: skillTypes(['attack']),
   },
+  {
+    name: 'Ataque pé Direto',
+    description: 'Ataque com precisão e força com o pé direito.',
+    skillGroup: 'resource',
+    skillModalities: modalities(['altinha']),
+    skillTypes: skillTypes(['attack']),
+  },
+  {
+    name: 'Ataque pé Esquerdo',
+    description: 'Ataque com precisão e força com o pé esquerdo.',
+    skillGroup: 'resource',
+    skillModalities: modalities(['altinha']),
+    skillTypes: skillTypes(['attack']),
+  },
 ] as const satisfies readonly Prisma.SkillCreateInput[]
 
 export type ValidAltinhaAndFootvolleyFundamentalName =
