@@ -112,28 +112,14 @@ model Modality {
   name        String @unique
   description String
 
-  Player                Player[]                @relation("PlayerMainModality")
-  SkillModalityRelation SkillModalityRelation[]
-  PlayerModality        PlayerModality[]
+  Player         Player[]         @relation("PlayerMainModality")
+  Skill          Skill[]
+  PlayerModality PlayerModality[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("modalities")
-}
-
-model SkillModalityRelation {
-  skillId    String
-  modalityId String
-
-  skill    Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  modality Modality @relation(fields: [modalityId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@id([skillId, modalityId])
-  @@map("skill_modality_relations")
 }
 
 model SkillType {
@@ -156,9 +142,6 @@ model SkillSkillTypeRelation {
   skill     Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
   skillType SkillType @relation(fields: [typeId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
   @@id([skillId, typeId])
   @@map("skill_skill_type_relations")
 }
@@ -167,15 +150,18 @@ model Skill {
   id          String @id @default(cuid())
   name        String
   description String
+  modalityId  String
 
   skillGroup            SkillGroupTag
-  skillModalities       SkillModalityRelation[]
   skillTypes            SkillSkillTypeRelation[]
   playerSkillMonthStats PlayerSkillMonthStats[]
+
+  modality Modality @relation(fields: [modalityId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([name, modalityId])
   @@map("skills")
 }
 
