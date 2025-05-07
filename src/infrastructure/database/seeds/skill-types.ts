@@ -9,7 +9,7 @@ export const skillTypesSeed = [
     type: 'defense',
     description: 'Skills used to block, intercept, or prevent scoring.',
   },
-] as const satisfies readonly Prisma.SkillTypeCreateInput[]
+] as const satisfies Prisma.SkillTypeCreateInput[]
 
 export type ValidSkillType = (typeof skillTypesSeed)[number]['type']
 

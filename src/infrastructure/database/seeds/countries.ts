@@ -246,6 +246,6 @@ export const countries = [
   { code: 'ZA', name: 'South Africa', emoji: '🇿🇦' },
   { code: 'ZM', name: 'Zambia', emoji: '🇿🇲' },
   { code: 'ZW', name: 'Zimbabwe', emoji: '🇿🇼' },
-] as const satisfies readonly Prisma.CountryCreateInput[]
+] as const satisfies Prisma.CountryCreateInput[]
 
 // export type ValidCountryCode = typeof countries[number]['code']

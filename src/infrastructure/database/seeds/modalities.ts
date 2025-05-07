@@ -21,12 +21,10 @@ export const modalitiesSeed = [
     description:
       'A team sport played on sand with two players per team, requiring high levels of coordination, jumping, and strategic ball placement to win points.',
   },
-] as const satisfies readonly Prisma.ModalityCreateInput[]
+] as const satisfies Prisma.ModalityCreateInput[]
 
 export type ValidModalityName = (typeof modalitiesSeed)[number]['name']
 
-export const modalities = (mods: ValidModalityName[]) => ({
-  create: mods.map((m) => ({
-    modality: { connect: { name: m } },
-  })),
+export const modality = (name: ValidModalityName) => ({
+  connect: { name },
 })
