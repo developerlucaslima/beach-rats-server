@@ -24,7 +24,3 @@ export const modalitiesSeed = [
 ] as const satisfies Prisma.ModalityCreateInput[]
 
 export type ValidModalityName = (typeof modalitiesSeed)[number]['name']
-
-export const modality = (name: ValidModalityName) => ({
-  connect: { name },
-})
