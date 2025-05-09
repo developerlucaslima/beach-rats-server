@@ -20,10 +20,13 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Seeding database...')
 
-  await prisma.country.createMany({
-    data: countries,
-    skipDuplicates: true,
-  })
+  for (const country of countries) {
+    await prisma.country.upsert({
+      where: { code: country.code },
+      update: {},
+      create: country,
+    })
+  }
 
   for (const modality of modalitiesSeed) {
     await prisma.modality.upsert({

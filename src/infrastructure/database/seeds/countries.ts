@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client'
 
-export const countries = [
+export const countries: Prisma.CountryCreateInput[] = [
   { code: 'AD', name: 'Andorra', emoji: '🇦🇩' },
   { code: 'AE', name: 'United Arab Emirates', emoji: '🇦🇪' },
   { code: 'AF', name: 'Afghanistan', emoji: '🇦🇫' },
@@ -246,6 +246,6 @@ export const countries = [
   { code: 'ZA', name: 'South Africa', emoji: '🇿🇦' },
   { code: 'ZM', name: 'Zambia', emoji: '🇿🇲' },
   { code: 'ZW', name: 'Zimbabwe', emoji: '🇿🇼' },
-] as const satisfies Prisma.CountryCreateInput[]
+]
 
 // export type ValidCountryCode = typeof countries[number]['code']
