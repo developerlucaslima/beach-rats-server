@@ -22,8 +22,6 @@ export interface SkillSkillTypeRelation {
   skillType: SkillType
   skillId: string
   typeId: string
-  createdAt: Date
-  updatedAt: Date
 }
 
 export interface SkillWithTypes extends Skill {

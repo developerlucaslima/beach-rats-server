@@ -30,11 +30,7 @@ export class PrismaSkillsRepository implements ISkillsRepository {
   async findManyByModalityId(modalityId: string) {
     const skills = prisma.skill.findMany({
       where: {
-        skillModalities: {
-          some: {
-            modalityId,
-          },
-        },
+        modalityId,
       },
       include: {
         skillTypes: {
