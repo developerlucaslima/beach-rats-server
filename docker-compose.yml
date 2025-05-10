@@ -1,7 +1,7 @@
 services:
   postgresql:
     image: bitnami/postgresql:latest
-    container_name: beachrats-postgres
+    container_name: sportsrats-postgres
     volumes:
       - db:/bitnami/postgresql
     environment:
@@ -11,10 +11,10 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - beachrats-network
+      - sportsrats-network
 
 networks:
-  beachrats-network:
+  sportsrats-network:
     driver: bridge
 
 volumes:
