@@ -7,26 +7,25 @@ import {
   REFRESH_TOKEN_EXPIRATION_SECONDS,
 } from '@jwt/jwt-config'
 import { setTokenCookie } from '@jwt/set-refresh-token-cookie'
-import { GoogleAuthService } from '@services/google-auth-service'
+import { GoogleOAuthService } from '@services/google-oauth-service'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 const authPlayerWithGoogleSchema = z.object({
-  idToken: z.string().min(10),
+  authorizationCode: z.string().min(10),
+  redirectUri: z.string().url(),
 })
 
 export async function authPlayerWithGoogleController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const { idToken } = authPlayerWithGoogleSchema.parse(request.body)
+  const { authorizationCode, redirectUri } = authPlayerWithGoogleSchema.parse(request.body)
 
-  const googleAuthService = new GoogleAuthService()
-  const { sub, email, emailVerified, name, avatarUrl } =
-    await googleAuthService.verifyIdToken(idToken)
+  const googleService = new GoogleOAuthService(redirectUri)
+  const { sub, email, isEmailVerified, name, avatarUrl } = await googleService.exchangeCodeForUser(authorizationCode)
 
-  /* Optional: reject unverified emails */
-  if (!emailVerified) {
+  if (!isEmailVerified) {
     throw new BusinessRuleException('Google email not verified.')
   }
 
@@ -36,6 +35,7 @@ export async function authPlayerWithGoogleController(
     email,
     googleId: sub,
     avatarUrl,
+    isEmailVerified,
   })
 
   const jwtPayload = {
