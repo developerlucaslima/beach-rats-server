@@ -3,10 +3,9 @@ import { BusinessRuleException } from '@errors/business-rules-exception'
 import { makeAuthPlayerWithGoogle } from '@factories/make-auth-player-with-google'
 import {
   ACCESS_TOKEN_EXPIRATION_SECONDS,
-  REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRATION_SECONDS,
 } from '@jwt/jwt-config'
-import { setTokenCookie } from '@jwt/set-refresh-token-cookie'
+import { setAuthCookies } from '@jwt/set-auth-cookies'
 import { GoogleOAuthService } from '@services/google-oauth-service'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -43,7 +42,7 @@ export async function authPlayerWithGoogleController(
     subscriptionPlan: player.subscriptionPlan,
   }
 
-  const token = await reply.jwtSign(jwtPayload, {
+  const accessToken = await reply.jwtSign(jwtPayload, {
     sign: {
       sub: player.id,
       expiresIn: `${ACCESS_TOKEN_EXPIRATION_SECONDS}s`,
@@ -57,16 +56,10 @@ export async function authPlayerWithGoogleController(
     },
   })
 
-  setTokenCookie({
-    reply,
-    tokenName: REFRESH_TOKEN_COOKIE_NAME,
-    token: refreshToken,
-    maxAge: REFRESH_TOKEN_EXPIRATION_SECONDS,
-  })
+  setAuthCookies(reply, accessToken, refreshToken)
 
   return reply.status(200).send({
     message: 'Authenticated with Google successfully.',
-    token,
     data: mapAuthenticatedPlayerResponse(player),
   })
 }
