@@ -7,7 +7,8 @@ import type { FastifyInstance } from 'fastify'
 
 import { globalErrorHandler } from '@/infrastructure/http/global-error-handler'
 
-import { env } from '../../env'
+import { env } from './env'
+import { authRoutes } from '@routes/auth-routes'
 
 export function registerPlugins(app: FastifyInstance) {
   app.register(fastifyCors, {
@@ -26,6 +27,7 @@ export function registerPlugins(app: FastifyInstance) {
   app.register(fastifyCookie)
   app.setErrorHandler(globalErrorHandler)
 
+  app.register(authRoutes, { prefix: '/auth' })
   app.register(playersRoutes, { prefix: '/players' })
   app.register(skillsRoutes, { prefix: '/skills' })
 }

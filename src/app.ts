@@ -1,4 +1,4 @@
-import { registerPlugins } from '@http/plugins'
+import { registerPlugins } from '@/plugins'
 import Fastify from 'fastify'
 
 import { env } from './env'
