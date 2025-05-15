@@ -1,5 +1,6 @@
 import { OAuth2Client } from 'google-auth-library'
 import { BusinessRuleException } from '@errors/business-rules-exception'
+import { env } from '@/env'
 
 interface GoogleUserData {
   sub: string
@@ -14,12 +15,12 @@ export class GoogleOAuthService {
 
   constructor(redirectUri: string) {
     this.client = new OAuth2Client({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: env.AUTH_GOOGLE_ID,
+      clientSecret: env.AUTH_GOOGLE_SECRET,
       redirectUri,
     })
   }
-
+  
   async exchangeCodeForUser(code: string): Promise<GoogleUserData> {
     const { tokens } = await this.client.getToken(code)
 
