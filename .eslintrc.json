@@ -7,7 +7,6 @@
   ],
   "rules": {
     "simple-import-sort/imports": "error",
-    "no-useless-constructor": "off",
-    "endOfLine": "auto"
+    "no-useless-constructor": "off"
   }
 }
