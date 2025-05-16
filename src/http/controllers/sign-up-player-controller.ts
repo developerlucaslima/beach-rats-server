@@ -2,7 +2,6 @@ import { mapAuthenticatedPlayerResponse } from '@dto/player-dto'
 import { makeSignUpPlayer } from '@factories/make-sign-up-player'
 import {
   ACCESS_TOKEN_EXPIRATION_SECONDS,
-  REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRATION_SECONDS,
 } from '@jwt/jwt-config'
 import { setAuthCookies } from '@jwt/set-auth-cookies'

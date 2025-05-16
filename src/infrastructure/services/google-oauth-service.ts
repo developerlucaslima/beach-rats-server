@@ -1,5 +1,6 @@
-import { OAuth2Client } from 'google-auth-library'
 import { BusinessRuleException } from '@errors/business-rules-exception'
+import { OAuth2Client } from 'google-auth-library'
+
 import { env } from '@/env'
 
 interface GoogleUserData {
@@ -20,7 +21,7 @@ export class GoogleOAuthService {
       redirectUri,
     })
   }
-  
+
   async exchangeCodeForUser(code: string): Promise<GoogleUserData> {
     const { tokens } = await this.client.getToken(code)
 
@@ -35,7 +36,9 @@ export class GoogleOAuthService {
 
     const payload = ticket.getPayload()
     if (!payload || !payload.email) {
-      throw new BusinessRuleException('Google token is invalid or missing fields.')
+      throw new BusinessRuleException(
+        'Google token is invalid or missing fields.',
+      )
     }
 
     return {

@@ -19,10 +19,13 @@ export async function authPlayerWithGoogleController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const { authorizationCode, redirectUri } = authPlayerWithGoogleSchema.parse(request.body)
+  const { authorizationCode, redirectUri } = authPlayerWithGoogleSchema.parse(
+    request.body,
+  )
 
   const googleService = new GoogleOAuthService(redirectUri)
-  const { sub, email, isEmailVerified, name, avatarUrl } = await googleService.exchangeCodeForUser(authorizationCode)
+  const { sub, email, isEmailVerified, name, avatarUrl } =
+    await googleService.exchangeCodeForUser(authorizationCode)
 
   if (!isEmailVerified) {
     throw new BusinessRuleException('Google email not verified.')
