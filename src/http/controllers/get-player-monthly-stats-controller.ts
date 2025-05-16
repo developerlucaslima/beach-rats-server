@@ -24,8 +24,5 @@ export async function getPlayerMonthlyStatsController(
       month,
     })
 
-  return reply.status(200).send({
-    message: `Stats for ${formattedMonth(month)} retrieved successfully.`,
-    data: playerModalityMonthStats,
-  })
+  return reply.status(200).send(playerModalityMonthStats)
 }

@@ -13,8 +13,5 @@ export async function getPlayerProfileController(
     playerId,
   })
 
-  return reply.status(200).send({
-    message: 'Player profile retrieved successfully.',
-    data: mapAuthenticatedPlayerResponse(player),
-  })
+  return reply.status(200).send(mapAuthenticatedPlayerResponse(player))
 }

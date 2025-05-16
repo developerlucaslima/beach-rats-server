@@ -58,8 +58,5 @@ export async function authPlayerWithGoogleController(
 
   setAuthCookies(reply, accessToken, refreshToken)
 
-  return reply.status(200).send({
-    message: 'Authenticated with Google successfully.',
-    data: mapAuthenticatedPlayerResponse(player),
-  })
+  return reply.status(200).send(mapAuthenticatedPlayerResponse(player))
 }

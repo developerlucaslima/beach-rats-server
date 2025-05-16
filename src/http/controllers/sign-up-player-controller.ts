@@ -49,8 +49,5 @@ export async function signUpPlayerController(
 
   setAuthCookies(reply, accessToken, refreshToken)
 
-  return reply.status(201).send({
-    message: 'Player registered and signed in successfully.',
-    data: mapAuthenticatedPlayerResponse(player),
-  })
+  return reply.status(201).send(mapAuthenticatedPlayerResponse(player))
 }

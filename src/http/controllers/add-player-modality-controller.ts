@@ -19,8 +19,5 @@ export async function addPlayerModalityController(
     modalityId,
   })
 
-  return reply.status(201).send({
-    message: 'Modality added successfully.',
-    data: playerModality,
-  })
+  return reply.status(201).send(playerModality)
 }
