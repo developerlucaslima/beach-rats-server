@@ -31,8 +31,5 @@ export async function updatePlayerProfileController(
     ...data,
   })
 
-  return reply.status(200).send({
-    message: 'Player profile updated successfully.',
-    data: mapAuthenticatedPlayerResponse(player),
-  })
+  return reply.status(200).send(mapAuthenticatedPlayerResponse(player))
 }

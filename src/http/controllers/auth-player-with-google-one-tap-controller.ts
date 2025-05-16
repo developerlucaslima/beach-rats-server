@@ -1,27 +1,40 @@
 import { mapAuthenticatedPlayerResponse } from '@dto/player-dto'
-import { makeSignInPlayer } from '@factories/make-sign-in-player'
+import { BusinessRuleException } from '@errors/business-rules-exception'
+import { makeAuthPlayerWithGoogle } from '@factories/make-auth-player-with-google'
 import {
   ACCESS_TOKEN_EXPIRATION_SECONDS,
   REFRESH_TOKEN_EXPIRATION_SECONDS,
 } from '@jwt/jwt-config'
 import { setAuthCookies } from '@jwt/set-auth-cookies'
+import { GoogleIdTokenService } from '@services/google-id-token-service'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-const signInPlayerSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+const authPlayerWithOneTapSchema = z.object({
+  idToken: z.string().min(10),
 })
 
-export async function signInPlayerController(
+export async function authPlayerWithGoogleOneTapController(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const { email, password } = signInPlayerSchema.parse(request.body)
-  const signInPlayerUseCase = makeSignInPlayer()
-  const { player } = await signInPlayerUseCase.execute({
+  const { idToken } = authPlayerWithOneTapSchema.parse(request.body)
+
+  const googleService = new GoogleIdTokenService()
+  const { sub, email, isEmailVerified, name, avatarUrl } =
+    await googleService.verifyIdToken(idToken)
+
+  if (!isEmailVerified) {
+    throw new BusinessRuleException('Google email not verified.')
+  }
+
+  const authPlayerWithGoogleUseCase = makeAuthPlayerWithGoogle()
+  const { player } = await authPlayerWithGoogleUseCase.execute({
+    name,
     email,
-    password,
+    googleId: sub,
+    avatarUrl,
+    isEmailVerified,
   })
 
   const jwtPayload = {

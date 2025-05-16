@@ -2,10 +2,9 @@ import { mapAuthenticatedPlayerResponse } from '@dto/player-dto'
 import { makeSignUpPlayer } from '@factories/make-sign-up-player'
 import {
   ACCESS_TOKEN_EXPIRATION_SECONDS,
-  REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRATION_SECONDS,
 } from '@jwt/jwt-config'
-import { setTokenCookie } from '@jwt/set-refresh-token-cookie'
+import { setAuthCookies } from '@jwt/set-auth-cookies'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -33,7 +32,7 @@ export async function signUpPlayerController(
     subscriptionPlan: player.subscriptionPlan,
   }
 
-  const token = await reply.jwtSign(jwtPayload, {
+  const accessToken = await reply.jwtSign(jwtPayload, {
     sign: {
       sub: player.id,
       expiresIn: `${ACCESS_TOKEN_EXPIRATION_SECONDS}s`,
@@ -47,16 +46,7 @@ export async function signUpPlayerController(
     },
   })
 
-  setTokenCookie({
-    reply,
-    tokenName: REFRESH_TOKEN_COOKIE_NAME,
-    token: refreshToken,
-    maxAge: REFRESH_TOKEN_EXPIRATION_SECONDS,
-  })
+  setAuthCookies(reply, accessToken, refreshToken)
 
-  return reply.status(201).send({
-    message: 'Player registered and signed in successfully.',
-    token,
-    data: mapAuthenticatedPlayerResponse(player),
-  })
+  return reply.status(201).send(mapAuthenticatedPlayerResponse(player))
 }

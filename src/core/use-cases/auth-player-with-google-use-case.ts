@@ -7,6 +7,7 @@ interface AuthPlayerWithGoogleUseCaseRequest {
   email: string
   googleId: string
   avatarUrl?: string
+  isEmailVerified: boolean
 }
 
 interface AuthPlayerWithGoogleUseCaseResponse {
@@ -21,6 +22,7 @@ export class AuthPlayerWithGoogleUseCase {
     email,
     googleId,
     avatarUrl,
+    isEmailVerified,
   }: AuthPlayerWithGoogleUseCaseRequest): Promise<AuthPlayerWithGoogleUseCaseResponse> {
     // It should prevent a player register with a duplicate googleId.
     const byGoogleId = await this.playersRepo.findByGoogleId(googleId)
@@ -50,6 +52,7 @@ export class AuthPlayerWithGoogleUseCase {
       email,
       googleId,
       avatarUrl,
+      isEmailVerified,
     })
 
     // It should return player without passwordHash.

@@ -3,10 +3,14 @@ import 'dotenv/config'
 import { z } from 'zod'
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
+  NODE_ENV: z
+    .enum(['development', 'test', 'production'])
+    .default('development'),
+  ORIGIN_URL: z.string(),
+  PORT: z.coerce.number(),
   JWT_SECRET: z.string(),
-  ORIGIN_URL: z.string().default('http://localhost:3000'),
-  PORT: z.coerce.number().default(3333),
+  AUTH_GOOGLE_ID: z.string(),
+  AUTH_GOOGLE_SECRET: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

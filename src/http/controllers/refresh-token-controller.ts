@@ -1,9 +1,8 @@
 import {
   ACCESS_TOKEN_EXPIRATION_SECONDS,
-  REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_EXPIRATION_SECONDS,
 } from '@jwt/jwt-config'
-import { setTokenCookie } from '@jwt/set-refresh-token-cookie'
+import { setAuthCookies } from '@jwt/set-auth-cookies'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function refreshTokenController(
@@ -40,15 +39,9 @@ export async function refreshTokenController(
     },
   )
 
-  setTokenCookie({
-    reply,
-    tokenName: REFRESH_TOKEN_COOKIE_NAME,
-    token: newRefreshToken,
-    maxAge: REFRESH_TOKEN_EXPIRATION_SECONDS,
-  })
+  setAuthCookies(reply, newAccessToken, newRefreshToken)
 
   return reply.status(200).send({
     message: 'Token refreshed successfully.',
-    token: newAccessToken,
   })
 }

@@ -2,8 +2,6 @@ import { makeGetPlayerMonthlyStats } from '@factories/make-get-player-monthly-st
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-import { formattedMonth } from '@/shared/utils/formatted-month'
-
 const getPlayerMonthlyStatsSchema = z.object({
   playerModalityId: z.string(),
   month: z.coerce.date(),
@@ -24,8 +22,5 @@ export async function getPlayerMonthlyStatsController(
       month,
     })
 
-  return reply.status(200).send({
-    message: `Stats for ${formattedMonth(month)} retrieved successfully.`,
-    data: playerModalityMonthStats,
-  })
+  return reply.status(200).send(playerModalityMonthStats)
 }

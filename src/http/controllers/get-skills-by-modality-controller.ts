@@ -18,8 +18,5 @@ export async function getSkillsByModalityController(
     modalityId,
   })
 
-  return reply.status(200).send({
-    message: 'Skills retrieved successfully.',
-    skills: skillsByModalityId,
-  })
+  return reply.status(200).send(skillsByModalityId)
 }
