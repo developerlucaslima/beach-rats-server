@@ -9,7 +9,7 @@ datasource db {
 
 enum Role {
   athlete
-  administrador
+  administrator
 }
 
 enum SubscriptionPlan {
@@ -23,6 +23,11 @@ enum SkillGroupTag {
   resource
 }
 
+enum SkillTypeTag {
+  attack
+  defense
+}
+
 enum Side {
   right
   left
@@ -30,6 +35,7 @@ enum Side {
 }
 
 enum Category {
+  none
   beginner
   intermediate
   advanced
@@ -80,18 +86,24 @@ model Country {
 
   players Player[] @relation("PlayerCountry")
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("countries")
 }
 
 model PlayerCondition {
-  name                String              @id
+  id                  String              @id @default(cuid())
+  name                String              @unique
   emoji               String
   playerConditionType PlayerConditionType
 
   physicalPlayers Player[] @relation("PlayerPhysicalCondition")
   mentalPlayers   Player[] @relation("PlayerMentalCondition")
 
-  @@unique([name, playerConditionType])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("player_conditions")
 }
 
@@ -100,30 +112,25 @@ model Modality {
   name        String @unique
   description String
 
-  Player                Player[]                @relation("PlayerMainModality")
-  SkillModalityRelation SkillModalityRelation[]
-  PlayerModalityStat    PlayerModality[]
+  Player         Player[]         @relation("PlayerMainModality")
+  Skill          Skill[]
+  PlayerModality PlayerModality[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("modalities")
 }
 
-model SkillModalityRelation {
-  skillId    String
-  modalityId String
-
-  skill    Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  modality Modality @relation(fields: [modalityId], references: [id], onDelete: Cascade)
-
-  @@id([skillId, modalityId])
-  @@map("skill_modality_relations")
-}
-
 model SkillType {
-  id          String @id @default(cuid())
-  type        String @unique
+  id          String       @id @default(cuid())
+  type        SkillTypeTag @unique
   description String
 
   SkillSkillTypeRelation SkillSkillTypeRelation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("skill_types")
 }
@@ -143,15 +150,18 @@ model Skill {
   id          String @id @default(cuid())
   name        String
   description String
+  modalityId  String
 
-  skillGroup        SkillGroupTag
-  skillModalities   SkillModalityRelation[]
-  skillTypes        SkillSkillTypeRelation[]
-  playerSkillMonths PlayerSkillMonth[]
+  skillGroup            SkillGroupTag
+  skillTypes            SkillSkillTypeRelation[]
+  playerSkillMonthStats PlayerSkillMonthStats[]
+
+  modality Modality @relation(fields: [modalityId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([name, modalityId])
   @@map("skills")
 }
 
@@ -160,7 +170,7 @@ model PlayerModality {
   playerId   String
   modalityId String
 
-  playerModalityMonths PlayerModalityMonth[]
+  playerModalityMonthStats PlayerModalityMonthStats[]
 
   modality Modality @relation(fields: [modalityId], references: [id], onDelete: Cascade)
   player   Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
@@ -168,48 +178,51 @@ model PlayerModality {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([playerId, modalityId])
   @@index([playerId])
   @@map("player_modalities")
 }
 
-model PlayerModalityMonth {
+model PlayerModalityMonthStats {
   id               String   @id @default(cuid())
   playerModalityId String
   month            DateTime
 
-  attack    Int
-  defense   Int
-  skills    Int
-  resources Int
-  overall   Int
+  fundamentalsScore Int
+  resourcesScore    Int
+  attackScore       Int
+  defenseScore      Int
+  overallScore      Int
 
-  skillsDetails PlayerSkillMonth[]
+  playerSkillMonthStats PlayerSkillMonthStats[]
 
-  playerModalityStat PlayerModality @relation(fields: [playerModalityId], references: [id], onDelete: Cascade)
+  playerModality PlayerModality @relation(fields: [playerModalityId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([playerModalityId, month])
   @@index([playerModalityId])
   @@index([month])
   @@index([createdAt])
-  @@map("player_modality_months")
+  @@map("player_modalities_months_stats")
 }
 
-model PlayerSkillMonth {
+model PlayerSkillMonthStats {
   id                    String   @id @default(cuid())
   category              Category
   playerModalityMonthId String
   skillId               String
 
-  playerModalityMonth PlayerModalityMonth @relation(fields: [playerModalityMonthId], references: [id], onDelete: Cascade)
-  skill               Skill               @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  playerModalityMonthStats PlayerModalityMonthStats @relation(fields: [playerModalityMonthId], references: [id], onDelete: Cascade)
+  skill                    Skill                    @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([playerModalityMonthId, skillId])
   @@index([playerModalityMonthId])
   @@index([skillId])
   @@index([createdAt])
-  @@map("player_skill_months")
+  @@map("player_skills_months_stats")
 }

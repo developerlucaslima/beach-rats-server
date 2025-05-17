@@ -1,8 +1,7 @@
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
-import { compare, hash } from "bcryptjs";
-
-import { ResourceNotFoundException } from "../errors/resource-not-found-exception";
-import { InvalidCredentialsException } from "../errors/invalid-credentials-exception";
+import { InvalidCredentialsException } from '@errors/invalid-credentials-exception'
+import { ResourceNotFoundException } from '@errors/resource-not-found-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
+import { compare, hash } from 'bcryptjs'
 
 interface UpdatePlayerPasswordUseCaseRequest {
   playerId: string
@@ -15,7 +14,7 @@ interface UpdatePlayerPasswordUseCaseResponse {
 }
 
 export class UpdatePlayerPasswordUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     playerId,
@@ -40,7 +39,10 @@ export class UpdatePlayerPasswordUseCase {
     const newPasswordHash = await hash(newPassword, 8)
 
     // It should update player with provided data.
-    const isUpdatedPlayer = await this.playersRepo.updatePassword({ playerId, passwordHash: newPasswordHash })
+    const isUpdatedPlayer = await this.playersRepo.updatePassword({
+      playerId,
+      passwordHash: newPasswordHash,
+    })
 
     // It should return true or false.
     return {

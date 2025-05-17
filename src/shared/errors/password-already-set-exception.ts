@@ -1,6 +1,8 @@
+import { BaseException } from './base-exception'
+
 const PASSWORD_ALREADY_SET_ERROR_CODE = 400
 
-export class PasswordAlreadySetException extends Error {
+export class PasswordAlreadySetException extends BaseException {
   public readonly code: number
 
   constructor() {

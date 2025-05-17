@@ -1,8 +1,6 @@
-import type { Player } from "@prisma/client";
-
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
-
-import { ResourceNotFoundException } from "../errors/resource-not-found-exception";
+import type { Player } from '@app-types/players-types'
+import { ResourceNotFoundException } from '@errors/resource-not-found-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
 
 interface UpdatePlayerProfileUseCaseRequest {
   playerId: string
@@ -23,7 +21,7 @@ interface UpdatePlayerProfileUseCaseResponse {
 }
 
 export class UpdatePlayerProfileUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     playerId,
@@ -38,9 +36,13 @@ export class UpdatePlayerProfileUseCase {
     }
 
     // It should update player with provided data.
-    const updatedPlayer = await this.playersRepo.updateProfile({ playerId, data })
+    const updatedPlayer = await this.playersRepo.updateProfile({
+      playerId,
+      data,
+    })
 
     // It should return player without passwordHash.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...safePlayer } = updatedPlayer
     return {
       player: safePlayer,

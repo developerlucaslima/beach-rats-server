@@ -1,6 +1,8 @@
+import { BaseException } from './base-exception'
+
 const BUSINESS_RULE_ERROR_CODE = 422
 
-export class BusinessRuleException extends Error {
+export class BusinessRuleException extends BaseException {
   public readonly code: number
 
   constructor(message: string) {

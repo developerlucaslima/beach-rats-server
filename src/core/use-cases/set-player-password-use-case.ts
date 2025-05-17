@@ -1,8 +1,7 @@
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
-import { hash } from "bcryptjs";
-
-import { ResourceNotFoundException } from "../errors/resource-not-found-exception";
-import { PasswordAlreadySetException } from "../errors/password-already-set-exception";
+import { PasswordAlreadySetException } from '@errors/password-already-set-exception'
+import { ResourceNotFoundException } from '@errors/resource-not-found-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
+import { hash } from 'bcryptjs'
 
 interface SetPlayerPasswordUseCaseRequest {
   playerId: string
@@ -14,7 +13,7 @@ interface SetPlayerPasswordUseCaseResponse {
 }
 
 export class SetPlayerPasswordUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     playerId,
@@ -35,7 +34,10 @@ export class SetPlayerPasswordUseCase {
     const newPasswordHash = await hash(newPassword, 8)
 
     // It should update the player's passwordHash in the database.
-    const isUpdatedPlayer = await this.playersRepo.updatePassword({ playerId, passwordHash: newPasswordHash })
+    const isUpdatedPlayer = await this.playersRepo.updatePassword({
+      playerId,
+      passwordHash: newPasswordHash,
+    })
 
     // It should return success: true when the password is updated.
     return {

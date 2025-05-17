@@ -1,7 +1,6 @@
+import { BaseException } from '@errors/base-exception'
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
 import { ZodError } from 'zod'
-import { InvalidCredentialsException } from '@/core/errors/invalid-credentials-exception'
-import { EmailNotAvailableException } from '@/core/errors/email-not-available-exception'
 
 export function globalErrorHandler(
   error: FastifyError,
@@ -15,10 +14,7 @@ export function globalErrorHandler(
     })
   }
 
-  if (
-    error instanceof InvalidCredentialsException ||
-    error instanceof EmailNotAvailableException
-  ) {
+  if (error instanceof BaseException) {
     return reply.status(error.code).send({ message: error.message } as never)
   }
 

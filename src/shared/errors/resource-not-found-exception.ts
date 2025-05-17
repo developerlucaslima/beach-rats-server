@@ -1,6 +1,8 @@
+import { BaseException } from './base-exception'
+
 const RESOURCE_NOT_FOUND_ERROR_CODE = 404
 
-export class ResourceNotFoundException extends Error {
+export class ResourceNotFoundException extends BaseException {
   public readonly code: number
 
   constructor(resource: string = 'Resource') {

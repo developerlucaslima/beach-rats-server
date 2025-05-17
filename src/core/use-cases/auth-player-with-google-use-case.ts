@@ -1,14 +1,13 @@
-import type { Player } from "@prisma/client";
-
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
-
-import { EmailNotAvailableException } from "../errors/email-not-available-exception";
+import type { Player } from '@app-types/players-types'
+import { EmailNotAvailableException } from '@errors/email-not-available-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
 
 interface AuthPlayerWithGoogleUseCaseRequest {
   name: string
   email: string
   googleId: string
   avatarUrl?: string
+  isEmailVerified: boolean
 }
 
 interface AuthPlayerWithGoogleUseCaseResponse {
@@ -16,13 +15,14 @@ interface AuthPlayerWithGoogleUseCaseResponse {
 }
 
 export class AuthPlayerWithGoogleUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     name,
     email,
     googleId,
     avatarUrl,
+    isEmailVerified,
   }: AuthPlayerWithGoogleUseCaseRequest): Promise<AuthPlayerWithGoogleUseCaseResponse> {
     // It should prevent a player register with a duplicate googleId.
     const byGoogleId = await this.playersRepo.findByGoogleId(googleId)
@@ -52,9 +52,11 @@ export class AuthPlayerWithGoogleUseCase {
       email,
       googleId,
       avatarUrl,
+      isEmailVerified,
     })
 
     // It should return player without passwordHash.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...safePlayer } = createdPlayer
     return {
       player: safePlayer,

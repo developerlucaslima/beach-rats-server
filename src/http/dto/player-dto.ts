@@ -1,6 +1,8 @@
-import type { Player } from "@prisma/client";
+import type { Player } from '@prisma/client'
 
-export function mapAuthenticatedPlayerResponse(player: Omit<Player, 'passwordHash'>) {
+export function mapAuthenticatedPlayerResponse(
+  player: Omit<Player, 'passwordHash'>,
+) {
   return {
     id: player.id,
     googleId: player.googleId,

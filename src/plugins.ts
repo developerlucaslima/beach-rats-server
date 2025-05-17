@@ -1,15 +1,23 @@
 import fastifyCookie from '@fastify/cookie'
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
+import { authRoutes } from '@routes/auth-routes'
+import { playersRoutes } from '@routes/players-routes'
+import { skillsRoutes } from '@routes/skills-routes'
 import type { FastifyInstance } from 'fastify'
 
+import { globalErrorHandler } from '@/infrastructure/http/global-error-handler'
+
 import { env } from './env'
-import { globalErrorHandler } from './http/errors/global-error-handler'
-import { playerRoutes } from './http/routes/players-routes'
 
 export function registerPlugins(app: FastifyInstance) {
+  const corsOrigins =
+    env.NODE_ENV !== 'production'
+      ? [env.ORIGIN_URL, 'http://localhost:3000']
+      : [env.ORIGIN_URL]
+
   app.register(fastifyCors, {
-    origin: env.ORIGIN_URL,
+    origin: corsOrigins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   })
@@ -23,5 +31,8 @@ export function registerPlugins(app: FastifyInstance) {
 
   app.register(fastifyCookie)
   app.setErrorHandler(globalErrorHandler)
-  app.register(playerRoutes)
+
+  app.register(authRoutes, { prefix: '/auth' })
+  app.register(playersRoutes, { prefix: '/players' })
+  app.register(skillsRoutes, { prefix: '/skills' })
 }

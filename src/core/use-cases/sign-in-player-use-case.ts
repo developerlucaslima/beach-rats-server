@@ -1,10 +1,7 @@
-import type { Player } from "@prisma/client";
-import { compare } from "bcryptjs";
-
-import type { IPlayersRepository } from "@/infrastructure/repositories/interfaces/players-repository";
-
-import { InvalidCredentialsException } from "../errors/invalid-credentials-exception";
-
+import type { Player } from '@app-types/players-types'
+import { InvalidCredentialsException } from '@errors/invalid-credentials-exception'
+import type { IPlayersRepository } from '@repositories/interfaces/players-repository'
+import { compare } from 'bcryptjs'
 
 interface SignInPlayerUseCaseRequest {
   email: string
@@ -16,7 +13,7 @@ interface SignInPlayerUseCaseResponse {
 }
 
 export class SignInPlayerUseCase {
-  constructor(private readonly playersRepo: IPlayersRepository) { }
+  constructor(private readonly playersRepo: IPlayersRepository) {}
 
   async execute({
     email,
@@ -35,6 +32,7 @@ export class SignInPlayerUseCase {
     }
 
     // It should return player without passwordHash.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash, ...safePlayer } = byEmail
     return {
       player: safePlayer,
